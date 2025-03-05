@@ -22,6 +22,25 @@
 		});
 	}
 
+	function showErrorLoginAlert() {
+		Swal.fire({
+			title: 'Login Error!',
+			text: 'You have entered invalid credentials',
+			icon: 'error',
+			background: '#1a1a1a', // Dark background
+			color: '#ffffff', // White text
+			timer: 3000,
+			confirmButtonColor: 'red', // Neon green confirm button
+			iconColor: 'red', // Neon green icon
+			customClass: {
+				popup: 'custom-swal-popup', // Optional: Add custom class for further styling
+				title: 'custom-swal-title',
+				content: 'custom-swal-content',
+				confirmButton: 'custom-swal-confirm-button'
+			}
+		});
+	}
+
 	let password = $state('');
 
 	function login(e) {
@@ -38,8 +57,16 @@
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.user.role == 'authenticated') {
-					showSuccessLoginAlert();
+				try {
+					if (data.user.role == 'authenticated') {
+						showSuccessLoginAlert();
+
+						setTimeout(() => {
+							goto('/');
+						}, 2500);
+					}
+				} catch (error) {
+					showErrorLoginAlert();
 				}
 
 				console.log(data);
