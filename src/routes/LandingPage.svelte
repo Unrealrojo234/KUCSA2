@@ -46,7 +46,7 @@
 	<div class="container">
 		<h1 class="display-4">Welcome to <span class="highlight">KUCSA</span></h1>
 		<p class="lead">Your Gateway to Computing Excellence</p>
-		<a href="#join" class="cta-button">Join Now</a>
+		<a href="/auth/login" style="text-decoration: none;" class="cta-button">login</a>
 	</div>
 </section>
 

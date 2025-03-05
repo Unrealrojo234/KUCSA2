@@ -1,19 +1,66 @@
 <script>
+	let email = $state('');
+	import Swal from 'sweetalert2';
+	import { goto } from '$app/navigation';
+
+	function showSuccessLoginAlert() {
+		Swal.fire({
+			title: 'Login Successful!',
+			text: 'You have successfully logged in.',
+			icon: 'success',
+			background: '#1a1a1a', // Dark background
+			color: '#ffffff', // White text
+			timer: 3000,
+			confirmButtonColor: '#39FF14', // Neon green confirm button
+			iconColor: '#39FF14', // Neon green icon
+			customClass: {
+				popup: 'custom-swal-popup', // Optional: Add custom class for further styling
+				title: 'custom-swal-title',
+				content: 'custom-swal-content',
+				confirmButton: 'custom-swal-confirm-button'
+			}
+		});
+	}
+
+	let password = $state('');
+
+	function login(e) {
+		e.preventDefault();
+
+		let data = { email: email, password: password };
+
+		fetch('/auth/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.user.role == 'authenticated') {
+					showSuccessLoginAlert();
+				}
+
+				console.log(data);
+			})
+			.catch((error) => console.error('Error ', error));
+	}
 </script>
 
 <main>
 	<!-- From Uiverse.io by ammarsaa -->
-	<form class="form form-control">
+	<form onsubmit={login} class="form form-control">
 		<p class="title">Login</p>
 
 		<label>
-			<input class="input" type="email" placeholder="" required="" />
+			<input bind:value={email} class="input" type="email" placeholder="" required="" />
 			<span>Email</span>
 		</label>
 		<br />
 
 		<label>
-			<input class="input" type="password" placeholder="" required="" />
+			<input bind:value={password} class="input" type="password" placeholder="" required="" />
 			<span>Password</span>
 		</label>
 		<br />

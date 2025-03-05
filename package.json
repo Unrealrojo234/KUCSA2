@@ -27,6 +27,7 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^2.49.1"
+		"@supabase/supabase-js": "^2.49.1",
+		"sweetalert2": "^11.17.2"
 	}
 }
