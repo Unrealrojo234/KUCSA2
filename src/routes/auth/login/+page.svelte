@@ -10,7 +10,7 @@
 			icon: 'success',
 			background: '#1a1a1a', // Dark background
 			color: '#ffffff', // White text
-			timer: 3000,
+			timer: 1500,
 			confirmButtonColor: '#39FF14', // Neon green confirm button
 			iconColor: '#39FF14', // Neon green icon
 			customClass: {
@@ -18,7 +18,8 @@
 				title: 'custom-swal-title',
 				content: 'custom-swal-content',
 				confirmButton: 'custom-swal-confirm-button'
-			}
+			},
+			showConfirmButton: false
 		});
 	}
 
@@ -29,7 +30,8 @@
 			icon: 'error',
 			background: '#1a1a1a', // Dark background
 			color: '#ffffff', // White text
-			timer: 3000,
+			timer: 1500,
+			showConfirmButton: false,
 			confirmButtonColor: 'red', // Neon green confirm button
 			iconColor: 'red', // Neon green icon
 			customClass: {

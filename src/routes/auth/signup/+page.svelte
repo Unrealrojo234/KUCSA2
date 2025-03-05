@@ -1,4 +1,47 @@
 <script>
+	import Swal from 'sweetalert2';
+	import { goto } from '$app/navigation';
+
+	function showSuccessSignupAlert() {
+		Swal.fire({
+			title: 'Sign Up Successful!',
+			text: 'Please verify your email',
+			icon: 'success',
+			background: '#1a1a1a', // Dark background
+			color: '#ffffff', // White text
+			timer: 1500,
+			confirmButtonColor: '#39FF14', // Neon green confirm button
+			iconColor: '#39FF14', // Neon green icon
+			customClass: {
+				popup: 'custom-swal-popup', // Optional: Add custom class for further styling
+				title: 'custom-swal-title',
+				content: 'custom-swal-content',
+				confirmButton: 'custom-swal-confirm-button'
+			},
+			showConfirmButton: false
+		});
+	}
+
+	function showErrorSignupAlert(error) {
+		Swal.fire({
+			title: 'Sign Up Error!',
+			text: error,
+			icon: 'error',
+			background: '#1a1a1a', // Dark background
+			color: '#ffffff', // White text
+			timer: 1500,
+			showConfirmButton: false,
+			confirmButtonColor: 'red', // Neon green confirm button
+			iconColor: 'red', // Neon green icon
+			customClass: {
+				popup: 'custom-swal-popup', // Optional: Add custom class for further styling
+				title: 'custom-swal-title',
+				content: 'custom-swal-content',
+				confirmButton: 'custom-swal-confirm-button'
+			}
+		});
+	}
+
 	let email = $state('');
 	let password = $state('');
 	let Confirmpassword = $state('');
@@ -11,28 +54,39 @@
 	const signUp = (e) => {
 		e.preventDefault();
 
-		let formData = {
-			email: email,
-			password: password,
-			regNumber: regNumber,
-			firstName: firstName,
-			lastName: lastName,
-			phoneNumber: phoneNumber
-		};
+		if (password != Confirmpassword) {
+			showErrorSignupAlert('Passwords do not match!');
+		} else {
+			let formData = {
+				email: email,
+				password: password,
+				regNumber: regNumber,
+				firstName: firstName,
+				lastName: lastName,
+				phoneNumber: phoneNumber
+			};
 
-		try {
-			fetch('/auth/signup', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(formData)
-			})
-				.then((res) => res.json())
-				.then((data) => console.log(data))
-				.catch((error) => console.error('Error', error));
-		} catch (error) {
-			console.error('Error ', error);
+			try {
+				fetch('/auth/signup', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(formData)
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						console.log(data);
+						showSuccessSignupAlert();
+						goto('/');
+					})
+					.catch((error) => {
+						console.error('Error', error);
+						showErrorSignupAlert(error);
+					});
+			} catch (error) {
+				console.error('Error ', error);
+			}
 		}
 	};
 </script>
