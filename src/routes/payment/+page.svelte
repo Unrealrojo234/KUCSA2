@@ -184,6 +184,7 @@
 	.text-gradient {
 		background: linear-gradient(45deg, #04ce47, #11cb8d);
 		-webkit-background-clip: text;
+		background-clip: text;
 		-webkit-text-fill-color: transparent;
 		font-size: 2.5rem;
 		font-weight: bold;
