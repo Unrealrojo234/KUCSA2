@@ -1,9 +1,9 @@
 <script>
 	import { onDestroy } from 'svelte';
 	import Swal from 'sweetalert2';
-	import Loader from './Loader.svelte';
+	import Loader from '../Loader.svelte';
 	let phone = $state('');
-	let amount = $state(null);
+	let amount = $state(100);
 	let transStatus = $state('');
 	let processing = $state(false);
 	let intervalId = $state(null);
@@ -112,6 +112,7 @@
 			name="amount"
 			bind:value={amount}
 			required
+			disabled
 			placeholder="100"
 			class="form-control input-glass"
 		/>
