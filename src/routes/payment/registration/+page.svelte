@@ -2,6 +2,8 @@
 	import { onDestroy } from 'svelte';
 	import Swal from 'sweetalert2';
 	import Loader from '../Loader.svelte';
+	import insertData from '$lib/insertData';
+
 	let phone = $state('');
 	let amount = $state(100);
 	let transStatus = $state('');
@@ -39,6 +41,7 @@
 				processing = false;
 				console.table({ status: transStatus, finished: true });
 				if (transStatus == 'success') {
+					insertData('registered');
 					alerts('success', transStatus);
 				} else {
 					alerts('error', transStatus);
