@@ -1,5 +1,17 @@
 <script>
 	// Define any reactive variables or functions here if needed
+	let { user } = $props();
+
+	console.log(user);
+	import handleLogout from '$lib/logout';
+
+	async function logout() {
+		try {
+			await handleLogout();
+		} catch (error) {
+			console.error('Logout failed:', error);
+		}
+	}
 </script>
 
 <header class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -27,10 +39,13 @@
 					<a class="nav-link" href="#events">Events</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#join">Join Us</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#contact">Contact</a>
+					<a
+						onclick={() => {
+							logout();
+						}}
+						class="nav-link"
+						href="#contact">Logout</a
+					>
 				</li>
 			</ul>
 		</div>
@@ -44,9 +59,15 @@
 >
 	<div class="hero-background"></div>
 	<div class="container">
-		<h1 class="display-4">Welcome to <span class="highlight">KUCSA</span></h1>
+		{#if user}
+			<h1 class="display-4">Welcome back to <span class="highlight">KUCSA</span></h1>
+		{:else}
+			<h1 class="display-4">Welcome to <span class="highlight">KUCSA</span></h1>
+		{/if}
 		<p class="lead">Your Gateway to Computing Excellence</p>
-		<a href="/auth/login" style="text-decoration: none;" class="cta-button">login</a>
+		{#if !user}
+			<a href="/auth/login" style="text-decoration: none;" class="cta-button">login</a>
+		{/if}
 	</div>
 </section>
 
