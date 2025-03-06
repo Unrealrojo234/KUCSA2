@@ -44,11 +44,8 @@ const handleLogout = async () => {
 	};
 
 	Swal.fire({
-		title: 'Are you sure you want to log out?',
+		title: 'Are you sure you want to log out? 🤔',
 		html: `
-			<div style="color: whitesmoke; font-size: 1rem;">
-				This action cannot be undone.
-			</div>
 		`,
 		background: '#1a1a1a',
 		color: 'whitesmoke',

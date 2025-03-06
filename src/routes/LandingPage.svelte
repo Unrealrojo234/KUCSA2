@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	// Define any reactive variables or functions here if needed
 	let { user } = $props();
 
@@ -37,6 +38,15 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#events">Events</a>
+				</li>
+				<li class="nav-item">
+					<a
+						onclick={() => {
+							goto('/profile');
+						}}
+						class="nav-link"
+						href="#contact">Profile</a
+					>
 				</li>
 				<li class="nav-item">
 					<a
@@ -173,19 +183,6 @@
 
 	.highlight {
 		color: #7bff00;
-	}
-
-	.cta-button {
-		background-color: #7bff00;
-		color: #0d0d0d;
-		padding: 15px 30px;
-		border-radius: 5px;
-		font-weight: bold;
-		transition: background-color 0.3s;
-	}
-
-	.cta-button:hover {
-		background-color: #6ae600;
 	}
 
 	.icon-card,

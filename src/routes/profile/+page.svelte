@@ -1,0 +1,183 @@
+<script>
+	let user = {
+		name: 'Ryan Otieno',
+		phone: '0712287611',
+		email: 'otienoryan812@gmail.com',
+		regNo: 'IN16/00115/24',
+		isRegistered: true,
+		isRenewed: true,
+		attendance: 38,
+		profile: 'https://i.pinimg.com/474x/b5/1b/c7/b51bc7c7f77ef1d955e9a2e1b4caa64e.jpg'
+	};
+</script>
+
+<main style="overflow-x: hidden;" class="container-fluid p-3 p-md-2">
+	<h1 class="text-center mb-4 mb-md-5">Profile</h1>
+
+	<!-- Profile Card -->
+	<div class="card event-card shadow-lg mx-auto mb-5" style="max-width: 40rem;">
+		<div class="card-body text-center p-4">
+			<div class="profile-img-container">
+				<!-- svelte-ignore a11y_img_redundant_alt -->
+				<img src={user.profile} alt="Profile Picture" class="profile-img" />
+			</div>
+			<div class="card user-info mt-4 p-3">
+				<h2 class="mb-3">{user.name}</h2>
+				<p class="mb-2"><strong>Reg No:</strong> {user.regNo}</p>
+				<p class="mb-2"><strong>Phone:</strong> {user.phone}</p>
+				<p class="mb-2"><strong>Email:</strong> {user.email}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Attendance Section -->
+	<div class="text-center mb-5">
+		<h2 class="mb-3">Attendance: {user.attendance}%</h2>
+		<div class="attendance-bar mx-auto">
+			<div class="attendance-progress" style={`width: ${user.attendance}%`}></div>
+		</div>
+	</div>
+
+	<!-- Action Cards -->
+	<div class="row justify-content-center g-4">
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="card event-card shadow-lg h-100">
+				<div class="card-body text-center p-4">
+					<h3 class="card-title mb-3">Registration</h3>
+					<button type="button" class="btn cta-button">Register</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="card event-card shadow-lg h-100">
+				<div class="card-body text-center p-4">
+					<h3 class="card-title mb-3">Renewal</h3>
+					<button type="button" class="btn cta-button">Renew</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="card event-card shadow-lg h-100">
+				<div class="card-body text-center p-4">
+					<h3 class="card-title mb-3">QR-Code</h3>
+					<button type="button" class="btn cta-button">Generate</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<style>
+	.profile-img-container {
+		display: flex;
+		justify-content: center;
+		margin-top: -4rem;
+	}
+
+	.profile-img {
+		width: 8rem;
+		height: 8rem;
+		border-radius: 50%;
+		border: 4px solid white;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	}
+
+	.user-info {
+		background-color: #f8f9fa;
+		padding: 1.5rem;
+		border-radius: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.attendance-bar {
+		width: 70%;
+		height: 10px;
+		background-color: #e9ecef;
+		border-radius: 5px;
+		overflow: hidden;
+		margin-top: 1rem;
+	}
+
+	.attendance-progress {
+		height: 100%;
+		background-color: #28a745;
+		border-radius: 5px;
+		transition: width 0.5s ease;
+	}
+
+	.card {
+		border: none;
+		background-color: rgba(75, 75, 75, 0.096);
+		border-radius: 0.5rem;
+	}
+
+	.card-body {
+		padding: 2rem;
+	}
+
+	.btn-primary {
+		background-color: #007bff;
+		border: none;
+		padding: 0.5rem 1.5rem;
+		border-radius: 0.25rem;
+	}
+
+	.btn-primary:hover {
+		background-color: #0056b3;
+	}
+
+	.shadow-lg {
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Responsive Adjustments */
+	@media (max-width: 768px) {
+		.profile-img {
+			width: 6rem;
+			height: 6rem;
+		}
+
+		.user-info {
+			padding: 1rem;
+		}
+
+		.attendance-bar {
+			width: 90%;
+		}
+
+		.card-body {
+			padding: 1.5rem;
+		}
+	}
+
+	@media (max-width: 576px) {
+		h1 {
+			font-size: 1.75rem;
+		}
+
+		h2 {
+			font-size: 1.5rem;
+		}
+
+		h3 {
+			font-size: 1.25rem;
+		}
+
+		.profile-img {
+			width: 5rem;
+			height: 5rem;
+		}
+
+		.user-info {
+			padding: 0.75rem;
+		}
+
+		.attendance-bar {
+			width: 100%;
+		}
+
+		.card-body {
+			padding: 1rem;
+		}
+	}
+</style>

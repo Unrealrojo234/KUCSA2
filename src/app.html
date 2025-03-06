@@ -54,6 +54,34 @@
 				background-color: red !important; /* Neon green background on hover */
 				color: whitesmoke !important; /* Dark text on hover */
 			}
+
+			.cta-button {
+				background-color: #7bff00;
+				color: #0d0d0d;
+				padding: 15px 30px;
+				border-radius: 5px;
+				font-weight: bold;
+				transition: background-color 0.3s;
+			}
+
+			.cta-button:hover {
+				background-color: #6ae600;
+			}
+
+			.icon-card,
+			.event-card {
+				padding: 20px;
+				border-radius: 10px;
+				transition:
+					transform 0.3s,
+					box-shadow 0.3s;
+			}
+
+			.icon-card:hover,
+			.event-card:hover {
+				transform: translateY(-10px);
+				box-shadow: 0 10px 20px rgba(125, 252, 6, 0.2);
+			}
 		</style>
 	</head>
 	<body data-sveltekit-preload-data="hover">
