@@ -157,10 +157,7 @@
 
 <footer class="py-5 bg-dark text-center">
 	<div class="container">
-		<div class="mb-4">
-			<p>Email: kucsa@university.edu</p>
-			<p>Follow us: [Social Media Links]</p>
-		</div>
+		<div class="mb-4"></div>
 		<form class="d-flex justify-content-center">
 			<input
 				type="email"
@@ -171,6 +168,8 @@
 			<button type="submit" class="btn cta-button">Subscribe</button>
 		</form>
 	</div>
+	<br />
+	<p>&#169;2025 KUCSA | All Rights Are Reserved</p>
 </footer>
 
 <style>

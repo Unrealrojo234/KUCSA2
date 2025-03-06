@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	let user = {
 		name: 'Ryan Otieno',
 		phone: '0712287611',
@@ -44,7 +46,13 @@
 			<div class="card event-card shadow-lg h-100">
 				<div class="card-body text-center p-4">
 					<h3 class="card-title mb-3">Registration</h3>
-					<button type="button" class="btn cta-button">Register</button>
+					<button
+						type="button"
+						onclick={() => {
+							goto('/payment/registration');
+						}}
+						class="btn cta-button">Register</button
+					>
 				</div>
 			</div>
 		</div>
@@ -52,7 +60,13 @@
 			<div class="card event-card shadow-lg h-100">
 				<div class="card-body text-center p-4">
 					<h3 class="card-title mb-3">Renewal</h3>
-					<button type="button" class="btn cta-button">Renew</button>
+					<button
+						type="button"
+						onclick={() => {
+							goto('/payment/renewal');
+						}}
+						class="btn cta-button">Renew</button
+					>
 				</div>
 			</div>
 		</div>
@@ -113,17 +127,6 @@
 
 	.card-body {
 		padding: 2rem;
-	}
-
-	.btn-primary {
-		background-color: #007bff;
-		border: none;
-		padding: 0.5rem 1.5rem;
-		border-radius: 0.25rem;
-	}
-
-	.btn-primary:hover {
-		background-color: #0056b3;
 	}
 
 	.shadow-lg {
