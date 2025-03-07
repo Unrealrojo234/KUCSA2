@@ -1,16 +1,28 @@
 <script>
 	import { goto } from '$app/navigation';
-	// Define any reactive variables or functions here if needed
-	let { user } = $props();
+	import { supabase } from '$lib/supabaseClient';
 
-	console.log(user);
+	export let user;
+
+	const navigateAndRefresh = async () => {
+		await goto('/');
+		window.location.reload();
+	};
+
+	// console.log(user);
 	import handleLogout from '$lib/logout';
+	import { onMount } from 'svelte';
 
 	async function logout() {
 		try {
-			await handleLogout();
+			const logoutSuccess = await handleLogout();
+			if (logoutSuccess) {
+				navigateAndRefresh();
+			} else {
+				console.log('Logout was canceled or failed');
+			}
 		} catch (error) {
-			console.error('Logout failed:', error);
+			// console.error('Logout failed:', error);
 		}
 	}
 </script>
@@ -69,10 +81,10 @@
 >
 	<div class="hero-background"></div>
 	<div class="container">
-		{#if user}
-			<h1 class="display-4">Welcome back to <span class="highlight">KUCSA</span></h1>
-		{:else}
+		{#if !user}
 			<h1 class="display-4">Welcome to <span class="highlight">KUCSA</span></h1>
+		{:else}
+			<h1 class="display-4">Welcome back to <span class="highlight">KUCSA</span></h1>
 		{/if}
 		<p class="lead">Your Gateway to Computing Excellence</p>
 		{#if !user}

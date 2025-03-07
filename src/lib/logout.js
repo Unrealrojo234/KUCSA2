@@ -3,11 +3,12 @@ import Swal from 'sweetalert2';
 import { supabase } from './supabaseClient';
 
 const handleLogout = async () => {
+	// Function to perform the logout
 	const logout = async () => {
 		const { error } = await supabase.auth.signOut();
 
 		if (error) {
-			console.error('Error logging out:', error.message);
+			//console.error('Error logging out:', error.message);
 			Swal.fire({
 				title: 'Logout Failed',
 				text: error.message,
@@ -20,9 +21,9 @@ const handleLogout = async () => {
 				},
 				buttonsStyling: false
 			});
-			return;
+			return false; // Return false if logout fails
 		} else {
-			console.log('User logged out successfully');
+			//console.log('User logged out successfully');
 			Swal.fire({
 				title: 'Logged Out',
 				text: '',
@@ -37,20 +38,27 @@ const handleLogout = async () => {
 				buttonsStyling: false
 			});
 
-			await supabase.auth.setSession(null);
+			try {
+				// Clear the session explicitly
+				await supabase.auth.setSession(null);
+				// Clear local and session storage
+				sessionStorage.clear();
+				localStorage.clear();
+			} catch (error) {
+				//console.log('Already logged out');
+			}
 
 			// Redirect to the home page
-			await goto('/'); // Replace with your desired route
-			sessionStorage.clear();
-			localStorage.clear();
-			window.location.href = '/';
+			await goto('/');
+
+			return true; // Return true if logout succeeds
 		}
 	};
 
-	Swal.fire({
+	// Show the confirmation dialog
+	const result = await Swal.fire({
 		title: 'Are you sure you want to log out? 🤔',
-		html: `
-		`,
+		html: ``,
 		background: '#1a1a1a',
 		color: 'whitesmoke',
 		showDenyButton: true,
@@ -61,13 +69,14 @@ const handleLogout = async () => {
 			denyButton: 'neon-deny-button'
 		},
 		buttonsStyling: false
-	}).then(async (result) => {
-		if (result.isConfirmed) {
-			await logout(); // Ensure logout is awaited
-		} else if (result.isDenied) {
-			// Do nothing or add additional logic
-		}
 	});
+
+	// Handle the result of the confirmation dialog
+	if (result.isConfirmed) {
+		return await logout(); // Return the result of the logout function
+	} else if (result.isDenied) {
+		return false; // Return false if the user cancels the logout
+	}
 };
 
 export default handleLogout;

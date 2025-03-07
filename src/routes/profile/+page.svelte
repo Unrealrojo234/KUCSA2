@@ -13,10 +13,6 @@
 	onMount(async () => {
 		//Getting the current session
 
-		const session = await supabase.auth.getSession();
-
-		uid = session.data.session.user.id;
-
 		// Create a canvas element and append it to the DOM
 		canvas = document.createElement('canvas');
 

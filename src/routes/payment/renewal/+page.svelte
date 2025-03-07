@@ -3,6 +3,9 @@
 	import Swal from 'sweetalert2';
 	import Loader from '../Loader.svelte';
 	import insertData from '$lib/insertData';
+	import { onMount } from 'svelte';
+	import { supabase } from '$lib/supabaseClient';
+	import { goto } from '$app/navigation';
 
 	let phone = $state('');
 	let amount = $state(50);

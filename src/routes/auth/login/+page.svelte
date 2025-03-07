@@ -79,7 +79,7 @@
 			// Redirect to the home page
 			setTimeout(() => {
 				goto('/');
-			}, 2500);
+			}, 1500);
 		} catch (error) {
 			console.error('Login Error:', error.message);
 			showErrorLoginAlert();

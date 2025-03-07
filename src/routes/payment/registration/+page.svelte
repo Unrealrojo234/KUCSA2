@@ -3,6 +3,26 @@
 	import Swal from 'sweetalert2';
 	import Loader from '../Loader.svelte';
 	import insertData from '$lib/insertData';
+	import { onMount } from 'svelte';
+	import { supabase } from '$lib/supabaseClient';
+	import { goto } from '$app/navigation';
+
+	// onMount(async () => {
+	// 	//Getting the current session
+
+	// 	try {
+	// 		const session = await supabase.auth.getSession();
+
+	// 		if (!session) {
+	// 			goto('/auth/login');
+	// 		} else {
+	// 			uid = session.data.session.user.id;
+	// 		}
+	// 	} catch (error) {
+	// 		//If there is no session client side redirect to login page
+	// 		goto('/auth/login');
+	// 	}
+	// });
 
 	let phone = $state('');
 	let amount = $state(100);
