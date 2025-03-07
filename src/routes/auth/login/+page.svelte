@@ -1,7 +1,11 @@
 <script>
-	let email = $state('');
+	import { onMount } from 'svelte';
+	import { supabase } from '$lib/supabaseClient.js'; // Ensure this path is correct
 	import Swal from 'sweetalert2';
 	import { goto } from '$app/navigation';
+
+	let email = $state('');
+	let password = $state('');
 
 	function showSuccessLoginAlert() {
 		Swal.fire({
@@ -43,59 +47,65 @@
 		});
 	}
 
-	let password = $state('');
-
-	function login(e) {
+	async function login(e) {
 		e.preventDefault();
 
-		let data = { email: email, password: password };
+		const data = { email: email, password: password };
 
-		fetch('/auth/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				try {
-					if (data.user.role == 'authenticated') {
-						showSuccessLoginAlert();
+		try {
+			const response = await fetch('/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
 
-						setTimeout(() => {
-							goto('/');
-						}, 2500);
-					}
-				} catch (error) {
-					showErrorLoginAlert();
-				}
+			const result = await response.json();
 
-				console.log(data);
-			})
-			.catch((error) => console.error('Error ', error));
+			if (result.error) {
+				throw new Error(result.error);
+			}
+
+			// Store the session in local storage
+			localStorage.setItem('sb-<your-project-ref>-auth-token', JSON.stringify(result.session));
+
+			// Initialize Supabase with the session
+			await supabase.auth.setSession(result.session);
+
+			// Show success message
+			showSuccessLoginAlert();
+
+			// Redirect to the home page
+			setTimeout(() => {
+				goto('/');
+			}, 2500);
+		} catch (error) {
+			console.error('Login Error:', error.message);
+			showErrorLoginAlert();
+		}
 	}
 </script>
 
 <main>
 	<!-- From Uiverse.io by ammarsaa -->
-	<form onsubmit={login} class="form form-control">
+	<form on:submit|preventDefault={login} class="form form-control">
 		<p class="title">Login</p>
 
 		<label>
-			<input bind:value={email} class="input" type="email" placeholder="" required="" />
+			<input bind:value={email} class="input" type="email" placeholder="" required />
 			<span>Email</span>
 		</label>
 		<br />
 
 		<label>
-			<input bind:value={password} class="input" type="password" placeholder="" required="" />
+			<input bind:value={password} class="input" type="password" placeholder="" required />
 			<span>Password</span>
 		</label>
 		<br />
 
 		<button class="submit">Login</button>
-		<p class="signin">Don't have an acount ? <a href="/auth/signup">Signup</a></p>
+		<p class="signin">Don't have an account? <a href="/auth/signup">Signup</a></p>
 	</form>
 </main>
 

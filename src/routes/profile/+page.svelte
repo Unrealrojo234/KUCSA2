@@ -1,5 +1,61 @@
 <script>
+	import { onMount } from 'svelte';
+	import QRCode from 'qrcode';
+	import Swal from 'sweetalert2';
 	import { goto } from '$app/navigation';
+	import { supabase } from '$lib/supabaseClient';
+	import getUid from '$lib/UID';
+
+	let canvas;
+
+	onMount(async () => {
+		const session = await supabase.auth.getSession();
+		console.log('Session:', session);
+	});
+
+	onMount(async () => {
+		// Create a canvas element and append it to the DOM
+		canvas = document.createElement('canvas');
+		//const uid = await getUid();
+
+		document.body.appendChild(canvas); // Append to DOM (optional for debugging)
+		// Generate the QR code on the canvas
+		await QRCode.toCanvas(canvas, 'uid', {
+			width: 200,
+			margin: 2
+		});
+	});
+
+	const QRCodeGenerator = async () => {
+		try {
+			// Ensure the canvas is fully rendered
+			await new Promise((resolve) => setTimeout(resolve, 100)); // Small delay
+
+			// Convert the canvas to a data URL
+			const qrCodeDataUrl = canvas.toDataURL('image/png');
+			console.log('QR Code Data URL:', qrCodeDataUrl); // Debugging
+
+			// Display the QR code in a SweetAlert2 modal
+			Swal.fire({
+				title: '<strong>Custom QR Code 🚀</strong>',
+				icon: 'info',
+				html: `
+					<img src="${qrCodeDataUrl}" class="image-fluid" alt="QR Code" style="width: 200px; height: 200px;"/>
+				`,
+				showCloseButton: true,
+				showCancelButton: false,
+				focusConfirm: false,
+				showConfirmButton: false
+			});
+		} catch (error) {
+			console.error('Error generating QR code:', error);
+			Swal.fire({
+				title: 'Error',
+				text: 'Failed to generate QR code.',
+				icon: 'error'
+			});
+		}
+	};
 
 	let user = {
 		name: 'Ryan Otieno',
@@ -74,7 +130,7 @@
 			<div class="card event-card shadow-lg h-100">
 				<div class="card-body text-center p-4">
 					<h3 class="card-title mb-3">QR-Code</h3>
-					<button type="button" class="btn cta-button">Generate</button>
+					<button type="button" onclick={QRCodeGenerator} class="btn cta-button">Generate</button>
 				</div>
 			</div>
 		</div>

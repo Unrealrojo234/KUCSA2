@@ -1,22 +1,6 @@
 import { error, json } from '@sveltejs/kit';
 import { supabase } from '$lib/supabaseClient.js';
-
-const getUid = async () => {
-	const {
-		data: { session },
-		error: sessionError
-	} = await supabase.auth.getSession();
-
-	if (sessionError) {
-		console.error('Error fetching session:', sessionError.message);
-		throw new Error('Failed to fetch session');
-	} else if (session) {
-		return session.user.id; // Return the UID
-	} else {
-		console.log('No active session.');
-		throw new Error('No active session');
-	}
-};
+import getUid from '$lib/UID.js';
 
 async function registrationRenewal(uid, type) {
 	try {

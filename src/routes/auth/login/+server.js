@@ -1,6 +1,5 @@
 import { error, json } from '@sveltejs/kit';
 import { supabase } from '$lib/supabaseClient.js';
-import Swal from 'sweetalert2';
 
 export async function POST({ request }) {
 	try {
@@ -20,8 +19,8 @@ export async function POST({ request }) {
 			throw authError;
 		}
 
-		console.log('User logged in:', data.user);
-		return json({ success: true, user: data.user });
+		// Return the session and user data
+		return json({ success: true, session: data.session, user: data.user });
 	} catch (err) {
 		console.error('An error occurred:', err);
 		return json({ error: err.message }, { status: 500 });
