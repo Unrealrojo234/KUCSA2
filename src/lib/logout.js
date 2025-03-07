@@ -36,10 +36,14 @@ const handleLogout = async () => {
 				showConfirmButton: false,
 				buttonsStyling: false
 			});
+
+			await supabase.auth.setSession(null);
+
 			// Redirect to the home page
 			await goto('/'); // Replace with your desired route
-
-			window.location.reload();
+			sessionStorage.clear();
+			localStorage.clear();
+			window.location.href = '/';
 		}
 	};
 

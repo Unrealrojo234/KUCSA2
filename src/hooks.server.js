@@ -18,6 +18,8 @@ export async function handle({ event, resolve }) {
 		}
 	}
 
+	event.locals.session = session;
+
 	// Resolve the request
 	return resolve(event);
 }

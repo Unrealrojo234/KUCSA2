@@ -5,7 +5,11 @@
 </script>
 
 <main>
-	<LandingPage user={data.user} />
+	{#if data}
+		<LandingPage user={data.user} />
+	{:else}
+		<LandingPage />
+	{/if}
 </main>
 
 <style>

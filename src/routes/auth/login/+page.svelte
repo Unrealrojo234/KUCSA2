@@ -89,6 +89,7 @@
 
 <main>
 	<!-- From Uiverse.io by ammarsaa -->
+	<!-- svelte-ignore event_directive_deprecated -->
 	<form on:submit|preventDefault={login} class="form form-control">
 		<p class="title">Login</p>
 
