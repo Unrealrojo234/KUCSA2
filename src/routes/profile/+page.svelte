@@ -8,19 +8,21 @@
 
 	let canvas;
 
-	onMount(async () => {
-		const session = await supabase.auth.getSession();
-		console.log('Session:', session);
-	});
+	let uid = $state(null);
 
 	onMount(async () => {
+		//Getting the current session
+
+		const session = await supabase.auth.getSession();
+
+		uid = session.data.session.user.id;
+
 		// Create a canvas element and append it to the DOM
 		canvas = document.createElement('canvas');
-		//const uid = await getUid();
 
 		document.body.appendChild(canvas); // Append to DOM (optional for debugging)
 		// Generate the QR code on the canvas
-		await QRCode.toCanvas(canvas, 'uid', {
+		await QRCode.toCanvas(canvas, `${uid}`, {
 			width: 200,
 			margin: 2
 		});
