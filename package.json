@@ -28,7 +28,9 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^2.49.1",
+		"bootstrap": "^5.3.3",
 		"qrcode": "^1.5.4",
+		"smelte": "^1.1.8",
 		"sweetalert2": "^11.17.2"
 	}
 }

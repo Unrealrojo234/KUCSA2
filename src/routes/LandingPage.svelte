@@ -187,8 +187,8 @@
 <style>
 	/* Custom styles to complement Bootstrap */
 	:global(body) {
-		background-color: #0d0d0d;
-		color: whitesmoke;
+		background-color: #222428; /*Ebony*/
+		color: rgba(250, 248, 248, 0.836);
 		font-family: 'Arial', sans-serif;
 	}
 
