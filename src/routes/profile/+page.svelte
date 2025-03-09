@@ -55,16 +55,24 @@
 		}
 	};
 
-	let user = {
-		name: 'Ryan Otieno',
-		phone: '0712287611',
+	//Accessing data from the load function
+
+	let { data } = $props();
+
+	data = data.data;
+
+	const { reg_number, first_name, last_name, phone_number, registered, renewed } = data;
+
+	let user = $state({
+		name: first_name + ' ' + last_name,
+		phone: phone_number,
 		email: 'otienoryan812@gmail.com',
-		regNo: 'IN16/00115/24',
-		isRegistered: true,
-		isRenewed: true,
+		regNo: reg_number,
+		isRegistered: registered,
+		isRenewed: renewed,
 		attendance: 38,
-		profile: 'https://i.pinimg.com/474x/b5/1b/c7/b51bc7c7f77ef1d955e9a2e1b4caa64e.jpg'
-	};
+		profile: 'avator.svg'
+	});
 </script>
 
 <OffCanvas />
@@ -104,10 +112,11 @@
 					<h3 class="card-title mb-3">Registration</h3>
 					<button
 						type="button"
+						disabled={registered}
 						onclick={() => {
 							goto('/payment/registration');
 						}}
-						class="btn cta-button">Register</button
+						class="btn cta-button">{registered ? 'Already Registered 🤝🏼' : 'Register 🥺'}</button
 					>
 				</div>
 			</div>
@@ -118,10 +127,11 @@
 					<h3 class="card-title mb-3">Renewal</h3>
 					<button
 						type="button"
+						disabled={renewed || registered}
 						onclick={() => {
 							goto('/payment/renewal');
 						}}
-						class="btn cta-button">Renew</button
+						class="btn cta-button">{renewed ? 'Already Renewed 🤝🏼' : 'Renew 🥺'}</button
 					>
 				</div>
 			</div>
@@ -130,7 +140,8 @@
 			<div class="card event-card shadow-lg h-100">
 				<div class="card-body text-center p-4">
 					<h3 class="card-title mb-3">QR-Code</h3>
-					<button type="button" onclick={QRCodeGenerator} class="btn cta-button">Generate</button>
+					<button type="button" onclick={QRCodeGenerator} class="btn cta-button">Generate ⚙️</button
+					>
 				</div>
 			</div>
 		</div>

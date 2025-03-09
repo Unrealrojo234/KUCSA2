@@ -2,7 +2,7 @@
 import { redirect } from '@sveltejs/kit';
 import { supabase } from '$lib/supabaseClient';
 
-export const load = async () => {
+export const load = async ({ fetch }) => {
 	// Fetch the current session
 	const {
 		data: { session }
@@ -13,8 +13,31 @@ export const load = async () => {
 		throw redirect(303, '/auth/login');
 	}
 
-	// Return data needed for the page
-	return {
-		user: session.user
-	};
+	console.log(session);
+
+	try {
+		// Fetch user profile data
+		const response = await fetch('/database/fetching/userProfile', {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({ uid: session.user.id })
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch user profile');
+		}
+
+		let data = await response.json();
+
+		data = data[0];
+
+		return { data };
+	} catch (error) {
+		console.error('Error:', error);
+		return {
+			userProfile: null
+		};
+	}
 };
