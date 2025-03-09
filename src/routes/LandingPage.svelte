@@ -2,11 +2,6 @@
 	import { goto } from '$app/navigation';
 	export let user;
 	import { supabase } from '$lib/supabaseClient';
-
-	const navigateAndRefresh = async () => {
-		await goto('/');
-		window.location.reload();
-	};
 </script>
 
 <section

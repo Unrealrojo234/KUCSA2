@@ -2,10 +2,16 @@
 	let isOpen = $state(false);
 	import ToggleButton from './ToggleButton.svelte';
 	import { supabase } from '$lib/supabaseClient';
+	import { goto } from '$app/navigation';
 
 	// console.log(user);
 	import handleLogout from '$lib/logout';
 	import { onMount } from 'svelte';
+
+	const navigateAndRefresh = async () => {
+		await goto('/');
+		window.location.reload();
+	};
 
 	async function logout() {
 		try {
@@ -69,6 +75,7 @@
 				<!-- svelte-ignore a11y_missing_attribute -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<a
+					href="."
 					class="text-primary"
 					onclick={() => {
 						logout();

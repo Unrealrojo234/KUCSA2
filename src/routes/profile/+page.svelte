@@ -37,11 +37,10 @@
 			// Display the QR code in a SweetAlert2 modal
 			Swal.fire({
 				title: '<strong>Custom QR Code 🚀</strong>',
-				icon: 'info',
 				html: `
 					<img src="${qrCodeDataUrl}" class="image-fluid" alt="QR Code" style="width: 200px; height: 200px;"/>
 				`,
-				showCloseButton: true,
+				showCloseButton: false,
 				showCancelButton: false,
 				focusConfirm: false,
 				showConfirmButton: false
