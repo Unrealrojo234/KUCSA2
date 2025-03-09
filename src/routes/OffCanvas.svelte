@@ -75,7 +75,7 @@
 				<!-- svelte-ignore a11y_missing_attribute -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<a
-					href="."
+					href="#"
 					class="text-primary"
 					onclick={() => {
 						logout();

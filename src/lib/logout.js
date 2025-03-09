@@ -1,4 +1,3 @@
-import { goto } from '$app/navigation'; // For redirecting after logout
 import Swal from 'sweetalert2';
 import { supabase } from './supabaseClient';
 
@@ -47,9 +46,6 @@ const handleLogout = async () => {
 			} catch (error) {
 				//console.log('Already logged out');
 			}
-
-			// Redirect to the home page
-			await goto('/');
 
 			return true; // Return true if logout succeeds
 		}
