@@ -22,12 +22,13 @@
 		"globals": "^15.0.0",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
-		"svelte": "^5.0.0",
+		"svelte": "^5.22.6",
 		"vite": "^5.0.3",
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^2.49.1",
+		"@sveltestrap/sveltestrap": "^7.1.0",
 		"bootstrap": "^5.3.3",
 		"qrcode": "^1.5.4",
 		"smelte": "^1.1.8",

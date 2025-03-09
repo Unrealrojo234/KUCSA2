@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { supabase } from '$lib/supabaseClient';
 	import getUid from '$lib/UID';
+	import OffCanvas from '../OffCanvas.svelte';
 
 	let canvas;
 
@@ -66,6 +67,8 @@
 		profile: 'https://i.pinimg.com/474x/b5/1b/c7/b51bc7c7f77ef1d955e9a2e1b4caa64e.jpg'
 	};
 </script>
+
+<OffCanvas />
 
 <main style="overflow-x: hidden;" class="container-fluid p-3 p-md-2">
 	<h1 class="text-center mb-4 mb-md-5">Profile</h1>
@@ -175,7 +178,7 @@
 
 	.card {
 		border: none;
-		background-color: rgba(75, 75, 75, 0.096);
+		background-color: #00b492;
 		border-radius: 0.5rem;
 	}
 

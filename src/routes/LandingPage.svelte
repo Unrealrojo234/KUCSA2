@@ -1,78 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { supabase } from '$lib/supabaseClient';
-
 	export let user;
+	import { supabase } from '$lib/supabaseClient';
 
 	const navigateAndRefresh = async () => {
 		await goto('/');
 		window.location.reload();
 	};
-
-	// console.log(user);
-	import handleLogout from '$lib/logout';
-	import { onMount } from 'svelte';
-
-	async function logout() {
-		try {
-			const logoutSuccess = await handleLogout();
-			if (logoutSuccess) {
-				navigateAndRefresh();
-			} else {
-				console.log('Logout was canceled or failed');
-			}
-		} catch (error) {
-			// console.error('Logout failed:', error);
-		}
-	}
 </script>
-
-<header class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-	<div class="container">
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a class="navbar-brand" href="#">KUCSA</a>
-		<!-- svelte-ignore a11y_consider_explicit_label -->
-		<button
-			class="navbar-toggler"
-			type="button"
-			data-bs-toggle="collapse"
-			data-bs-target="#navbarNav"
-		>
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ms-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="#home">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#about">About</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#events">Events</a>
-				</li>
-				<li class="nav-item">
-					<a
-						onclick={() => {
-							goto('/profile');
-						}}
-						class="nav-link"
-						href="#contact">Profile</a
-					>
-				</li>
-				<li class="nav-item">
-					<a
-						onclick={() => {
-							logout();
-						}}
-						class="nav-link"
-						href="#contact">Logout</a
-					>
-				</li>
-			</ul>
-		</div>
-	</div>
-</header>
 
 <section
 	id="hero"
@@ -187,7 +122,7 @@
 <style>
 	/* Custom styles to complement Bootstrap */
 	:global(body) {
-		background-color: #222428; /*Ebony*/
+		background-color: #222428;
 		color: rgba(250, 248, 248, 0.836);
 		font-family: 'Arial', sans-serif;
 	}
@@ -198,7 +133,7 @@
 
 	.icon-card,
 	.event-card {
-		background-color: #262626;
+		background-color: #00b492;
 		padding: 20px;
 		border-radius: 10px;
 		transition:
@@ -221,6 +156,10 @@
 		background: radial-gradient(circle, rgba(123, 255, 0, 0.1), rgba(13, 13, 13, 1));
 		z-index: -1;
 		animation: glow 5s infinite alternate;
+	}
+
+	#events {
+		background-color: none;
 	}
 
 	@keyframes glow {
