@@ -1,6 +1,6 @@
 const insertData = (type) => {
 	try {
-		fetch(`/database/insertion`, {
+		fetch(`/database/insertion/payment`, {
 			method: 'POST',
 			body: JSON.stringify({
 				data: {
