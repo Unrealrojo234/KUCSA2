@@ -9,15 +9,16 @@
 
 	let canvas;
 
-	let uid = $state(null);
+	let uid = $state('');
 
 	onMount(async () => {
 		//Getting the current session
+		uid = await getUid();
 
 		// Create a canvas element and append it to the DOM
 		canvas = document.createElement('canvas');
 
-		document.body.appendChild(canvas); // Append to DOM (optional for debugging)
+		document.body.appendChild(canvas);
 		// Generate the QR code on the canvas
 		await QRCode.toCanvas(canvas, `${uid}`, {
 			width: 200,
