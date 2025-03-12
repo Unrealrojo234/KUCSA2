@@ -35,7 +35,7 @@ const getDate = () => {
 
 export async function POST({ request }) {
 	try {
-		const uid = await getUid(); // Get the UID
+		const { uid } = await request.json(); // Get the UID
 		const date = getDate(); // Get the formatted date
 
 		// Insert the attendance record into the database
