@@ -3,6 +3,7 @@
 	import ToggleButton from './ToggleButton.svelte';
 	import { supabase } from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
+	import getUid from '$lib/UID';
 
 	// console.log(user);
 	import handleLogout from '$lib/logout';
@@ -35,9 +36,15 @@
 	const closeDrawer = () => {
 		isOpen = false;
 	};
+
+	let session = $state(null);
+
+	onMount(async () => {
+		session = await getUid();
+	});
 </script>
 
-<div style="position: absolute;right:4%;top:1%;z-index:100;position:fixed">
+<div style="position: absolute;right:1%;top:1%;z-index:100;position:fixed">
 	<input onclick={toggleDrawer} checked={isOpen} type="checkbox" id="checkbox" />
 	<label for="checkbox" class="toggle">
 		<div class="bars" id="bar1"></div>
@@ -64,25 +71,29 @@
 			</label>
 		</div>
 
-		<h2>Menu</h2>
+		<h2>Navigation</h2>
 		<ul>
-			<li><a href="/" class="text-primary">Home</a></li>
-			<li><a href="/#about" class="text-primary">About</a></li>
-			<li><a href="/contact" class="text-primary">Contact</a></li>
-			<li><a href="/profile" class="text-primary">Profile</a></li>
-			<li>
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_missing_attribute -->
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					href="#"
-					class="text-primary"
-					onclick={() => {
-						logout();
-					}}>Logout</a
-				>
-			</li>
+			<li><a href="/" style="color:#00b492 ;">Home</a></li>
+			<li><a href="/#about" style="color:#00b492 ;">About</a></li>
+			{#if session}
+				<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
+				<li>
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_missing_attribute -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<!-- svelte-ignore a11y_invalid_attribute -->
+					<a
+						style="color:#00b492 ;"
+						href="#"
+						onclick={() => {
+							logout();
+						}}>Logout</a
+					>
+				</li>
+			{:else}
+				<li><a style="color:#00b492 ;" href="/auth/login">Login</a></li>
+				<li><a style="color:#00b492 ;" href="/contact/auth/signup">Sign Up</a></li>
+			{/if}
 		</ul>
 	</div>
 </div>
@@ -91,6 +102,11 @@
 	/* From Uiverse.io by vinodjangid07 */
 	#checkbox {
 		display: none;
+	}
+
+	li,
+	a {
+		color: #00b492;
 	}
 
 	.toggle {

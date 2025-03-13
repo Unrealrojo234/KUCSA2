@@ -67,7 +67,6 @@
 	let user = $state({
 		name: first_name + ' ' + last_name,
 		phone: phone_number,
-		email: 'otienoryan812@gmail.com',
 		regNo: reg_number,
 		isRegistered: registered,
 		isRenewed: renewed,
@@ -92,7 +91,6 @@
 				<h2 class="mb-3">{user.name}</h2>
 				<p class="mb-2"><strong>Reg No:</strong> {user.regNo}</p>
 				<p class="mb-2"><strong>Phone:</strong> {user.phone}</p>
-				<p class="mb-2"><strong>Email:</strong> {user.email}</p>
 			</div>
 		</div>
 	</div>
@@ -128,7 +126,7 @@
 					<h3 class="card-title mb-3">Renewal</h3>
 					<button
 						type="button"
-						disabled={renewed || registered}
+						disabled={renewed || !registered}
 						onclick={() => {
 							goto('/payment/renewal');
 						}}

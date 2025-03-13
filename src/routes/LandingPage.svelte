@@ -25,10 +25,16 @@
 
 <section id="about" class="py-5 bg-dark">
 	<div class="container text-center">
-		<h2 class="mb-4">About <span class="highlight">KUCSA</span></h2>
-		<p class="mb-5">
+		<h2 class="mb-5">About <span class="highlight">KUCSA</span></h2>
+		<p class="">
 			KUCSA is the premier computing club at Kisii University, dedicated to fostering innovation,
 			collaboration, and technical growth.
+		</p>
+		<p class="mb-5">
+			Kisii University Computing Students Association is exploring the tech potential of its members
+			to introduce plans and programs that are aimed at exposing our members to the job market and
+			trends, a voice to the surrounding society and a direct engagements professionally across
+			Africa and global society that leads to future career growth and employability.
 		</p>
 		<div class="row justify-content-center">
 			<div class="col-md-4 mb-4">
@@ -68,7 +74,7 @@
 	</div>
 </section>
 
-<section id="events" class="py-5">
+<section id="events" class="py-5 bg-dark">
 	<div class="container text-center">
 		<h2 class="mb-4">Upcoming <span class="highlight">Events</span></h2>
 		<div class="row justify-content-center">
@@ -76,24 +82,30 @@
 				<div class="event-card">
 					<h3>Hackathon 2023</h3>
 					<p>Date: November 15-16</p>
-					<a href="#register" class="btn cta-button">Register</a>
+					<a href="#register" class="btn cta-button">View</a>
 				</div>
 			</div>
 			<div class="col-md-4 mb-4">
 				<div class="event-card">
 					<h3>AI Workshop</h3>
 					<p>Date: December 5</p>
-					<a href="#register" class="btn cta-button">Register</a>
+					<a href="#register" class="btn cta-button">View</a>
 				</div>
 			</div>
 			<div class="col-md-4 mb-4">
 				<div class="event-card">
 					<h3>Tech Talk: Blockchain</h3>
 					<p>Date: January 10</p>
-					<a href="#register" class="btn cta-button">Register</a>
+					<a href="#register" class="btn cta-button">View</a>
 				</div>
 			</div>
 		</div>
+	</div>
+</section>
+
+<section class="bg-dark py-5">
+	<div class="container text-center">
+		<h1>Blogs</h1>
 	</div>
 </section>
 

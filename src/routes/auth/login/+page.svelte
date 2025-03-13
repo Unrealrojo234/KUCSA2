@@ -87,7 +87,7 @@
 	}
 </script>
 
-<main>
+<main class="container-fluid">
 	<!-- From Uiverse.io by ammarsaa -->
 	<!-- svelte-ignore event_directive_deprecated -->
 	<form on:submit|preventDefault={login} class="form form-control">
@@ -105,7 +105,7 @@
 		</label>
 		<br />
 
-		<button class="submit">Login</button>
+		<button class="submit btn btn-success">Login</button>
 		<p class="signin">Don't have an account? <a href="/auth/signup">Signup</a></p>
 	</form>
 </main>
@@ -141,7 +141,7 @@
 		display: flex;
 		align-items: center;
 		padding-left: 30px;
-		color: #7bff00;
+		color: #00b492;
 	}
 
 	.title::before {
@@ -163,7 +163,7 @@
 		width: 16px;
 		border-radius: 50%;
 		left: 0px;
-		background-color: #6ae600;
+		background-color: #00b492;
 	}
 
 	.signin {
@@ -173,14 +173,6 @@
 
 	.signin {
 		text-align: center;
-	}
-
-	.signin a:hover {
-		text-decoration: underline #6ae600;
-	}
-
-	.signin a {
-		color: #6ae600;
 	}
 
 	.form label {
@@ -214,7 +206,7 @@
 
 	.form label .input:focus + span,
 	.form label .input:valid + span {
-		color: #6ae600;
+		color: #00b492;
 		top: 0px;
 		font-size: 0.7em;
 		font-weight: 600;
@@ -222,21 +214,6 @@
 
 	.input {
 		font-size: medium;
-	}
-
-	.submit {
-		border: none;
-		outline: none;
-		padding: 10px;
-		border-radius: 10px;
-		color: #fff;
-		font-size: 16px;
-		transform: 0.3s ease;
-		background-color: #88fd21a9;
-	}
-
-	.submit:hover {
-		background-color: #6ae600;
 	}
 
 	@keyframes pulse {

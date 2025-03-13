@@ -9,7 +9,7 @@
 			icon: 'success',
 			background: '#1a1a1a', // Dark background
 			color: '#ffffff', // White text
-			timer: 1500,
+			timer: 3000,
 			confirmButtonColor: '#39FF14', // Neon green confirm button
 			iconColor: '#39FF14', // Neon green icon
 			customClass: {
@@ -60,7 +60,7 @@
 			let formData = {
 				email: email,
 				password: password,
-				regNumber: regNumber,
+				regNumber: regNumber.toUpperCase(),
 				firstName: firstName,
 				lastName: lastName,
 				phoneNumber: phoneNumber
@@ -91,8 +91,7 @@
 	};
 </script>
 
-<main>
-	<!-- From Uiverse.io by ammarsaa -->
+<main class="container-fluid mb-3">
 	<form class="form form-control" onsubmit={signUp}>
 		<p class="title">Register</p>
 		<div class="flex">
@@ -141,7 +140,7 @@
 			<span>Confirm password</span>
 		</label>
 		<br />
-		<button type="submit" class="submit">Signup</button>
+		<button type="submit" class="submit btn btn-success">Signup</button>
 		<p class="signin">Already have an acount ? <a href="/auth/login">Signin</a></p>
 	</form>
 </main>
@@ -183,7 +182,7 @@
 		display: flex;
 		align-items: center;
 		padding-left: 30px;
-		color: #7bff00;
+		color: #00b492;
 	}
 
 	.title::before {
@@ -205,7 +204,7 @@
 		width: 16px;
 		border-radius: 50%;
 		left: 0px;
-		background-color: #6ae600;
+		background-color: #00b492;
 	}
 
 	.signin {
@@ -216,15 +215,6 @@
 	.signin {
 		text-align: center;
 	}
-
-	.signin a:hover {
-		text-decoration: underline #6ae600;
-	}
-
-	.signin a {
-		color: #6ae600;
-	}
-
 	.flex {
 		display: flex;
 		width: 100%;
@@ -262,7 +252,7 @@
 
 	.form label .input:focus + span,
 	.form label .input:valid + span {
-		color: #6ae600;
+		color: #00b492;
 		top: 0px;
 		font-size: 0.7em;
 		font-weight: 600;
@@ -270,21 +260,6 @@
 
 	.input {
 		font-size: medium;
-	}
-
-	.submit {
-		border: none;
-		outline: none;
-		padding: 10px;
-		border-radius: 10px;
-		color: #fff;
-		font-size: 16px;
-		transform: 0.3s ease;
-		background-color: #88fd21a9;
-	}
-
-	.submit:hover {
-		background-color: #6ae600;
 	}
 
 	@keyframes pulse {

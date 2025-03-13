@@ -99,6 +99,7 @@
 		<Loader />
 	{/if}
 	<h1 class="text-center text-gradient">KUCSA RENEWAL</h1>
+	<br /><br />
 	<form class="form-control mt-5" onsubmit={pay}>
 		<label for="phone" class="form-label"
 			>Mobile Number <span style="color: teal;">(M-PESA)</span></label
