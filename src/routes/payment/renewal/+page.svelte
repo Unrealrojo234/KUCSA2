@@ -46,6 +46,9 @@
 				if (transStatus == 'success') {
 					insertData('renewed');
 					alerts('success', transStatus);
+					setTimeout(() => {
+						goto('/profile');
+					}, 1500);
 				} else {
 					alerts('error', transStatus);
 				}

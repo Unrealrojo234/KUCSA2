@@ -63,6 +63,9 @@
 				if (transStatus == 'success') {
 					insertData('registered');
 					alerts('success', transStatus);
+					setTimeout(() => {
+						goto('/profile');
+					}, 1500);
 				} else {
 					alerts('error', transStatus);
 				}
