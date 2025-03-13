@@ -1,4 +1,4 @@
-<main>
+<main style="overflow-x: hidden;">
 	<!-- From Uiverse.io by adamgiebl -->
 	<section class="dots-container">
 		<div class="dot"></div>

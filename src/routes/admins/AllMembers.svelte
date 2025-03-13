@@ -1,6 +1,7 @@
 <script>
 	let users = $state([]); // Initialize users as an empty array
 	import { onMount } from 'svelte';
+	import Loader from '../payment/Loader.svelte';
 
 	onMount(() => {
 		try {
@@ -28,28 +29,30 @@
 </script>
 
 <main>
-	<h1 class="text-center">Members Data</h1>
 	{#if users.length > 0}
-		<table>
-			<thead>
-				<tr>
-					{#each Object.keys(excludeIdField(users[0])) as key}
-						<th>{key}</th>
-					{/each}
-				</tr>
-			</thead>
-			<tbody>
-				{#each users as user}
+		<h1 class="text-center">Members Data</h1>
+		<div class="table-responsive">
+			<table>
+				<thead>
 					<tr>
-						{#each Object.values(excludeIdField(user)) as value}
-							<td>{value}</td>
+						{#each Object.keys(excludeIdField(users[0])) as key}
+							<th>{key}</th>
 						{/each}
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each users as user}
+						<tr>
+							{#each Object.values(excludeIdField(user)) as value}
+								<td>{value}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	{:else}
-		<p>Loading users...</p>
+		<Loader />
 	{/if}
 </main>
 
@@ -80,7 +83,7 @@
 	}
 
 	tr:nth-child(even) {
-		background-color: #f3f3f3;
+		background-color: #272b28;
 	}
 
 	tr:hover {
