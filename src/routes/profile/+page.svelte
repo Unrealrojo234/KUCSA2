@@ -7,6 +7,9 @@
 	import getUid from '$lib/UID';
 	import OffCanvas from '../OffCanvas.svelte';
 
+	let meetings = $state(null);
+
+	let attendance = $state(null);
 	let canvas;
 
 	let uid = $state('');
@@ -24,6 +27,82 @@
 			width: 200,
 			margin: 2
 		});
+	});
+
+	onMount(() => {
+		// Subscribe to realtime changes for the checker table
+		const subscription = supabase
+			.channel('public:checker') // Channel name
+			.on(
+				'postgres_changes',
+				{ event: 'UPDATE', schema: 'public', table: 'checker' },
+				(payload) => {
+					// Handle update
+					meetings = payload.new.meetings;
+				}
+			)
+			.subscribe();
+
+		// Subscribe to realtime changes for the checker table
+		const subscription2 = supabase
+			.channel('public:attendance') // Channel name
+			.on(
+				'postgres_changes',
+				{ event: 'INSERT', schema: 'public', table: 'attendance' },
+				(payload) => {
+					if (payload.new.uid == uid) {
+						alert('Attendance Signed');
+
+						async function fetchData() {
+							uid = await getUid();
+							// Fetch initial attended meetings
+							const { data, error } = await supabase.from('attendance').select('*').eq('uid', uid);
+
+							if (error) console.error('Error fetching blogs:', error);
+							else {
+								attendance = await data.length;
+							}
+						}
+
+						fetchData();
+
+						console.log(payload);
+					}
+				}
+			)
+			.subscribe();
+
+		// Cleanup subscription on components unmount
+		return () => {
+			supabase.removeChannel(subscription);
+			supabase.removeChannel(subscription2);
+		};
+	});
+
+	$effect(async () => {
+		// Fetch initial  meetngs count
+		const { data, error } = await supabase
+			.from('checker')
+			.select('*')
+			.eq('id', 1)
+			.order('created_at', { ascending: false });
+
+		if (error) console.error('Error fetching blogs:', error);
+		else {
+			meetings = data[0].meetings;
+		}
+	});
+
+	$effect(async () => {
+		uid = await getUid();
+		// Fetch initial attended meetings
+		const { data, error } = await supabase.from('attendance').select('*').eq('uid', uid);
+
+		if (error) console.error('Error fetching blogs:', error);
+		else {
+			console.log(data);
+			attendance = data.length;
+		}
 	});
 
 	const QRCodeGenerator = async () => {
@@ -102,6 +181,10 @@
 			<div class="attendance-progress" style={`width: ${user.attendance}%`}></div>
 		</div>
 	</div>
+
+	{meetings}
+
+	{attendance}
 
 	<!-- Action Cards -->
 	<div class="row justify-content-center g-4">
