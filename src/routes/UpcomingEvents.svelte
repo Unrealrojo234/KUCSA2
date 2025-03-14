@@ -20,7 +20,7 @@
 				'postgres_changes',
 				{ event: 'UPDATE', schema: 'public', table: 'upcomingEvents' },
 				(payload) => {
-					// Handle updated comment
+					// Handle update
 					upcomingEvents = upcomingEvents.map((comment) =>
 						comment.id === payload.new.id ? payload.new : comment
 					);
@@ -57,7 +57,7 @@
 </script>
 
 <div class="container text-center py-5">
-	<h2 class="mb-4 display-4 fw-bold">Upcoming <span class="highlight">Events</span></h2>
+	<h2 class="mb-4 display-4 fw-bold">Upcoming <span class="highlight">Events</span> 🤓</h2>
 	<div class="row justify-content-center">
 		{#await upcomingEvents}
 			<p class="mt-2">Loading events...</p>

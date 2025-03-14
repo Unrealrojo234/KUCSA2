@@ -81,7 +81,8 @@
 
 <section class="bg-dark py-5">
 	<div class="container text-center">
-		<h1>Blogs</h1>
+		<h1 class="mb-4 display-4 fw-bold">Tech <span class="highlight">Blogs</span></h1>
+		<h2 class="mb-4 display-4 fw-bold">Coming Soon! 😲</h2>
 	</div>
 </section>
 
