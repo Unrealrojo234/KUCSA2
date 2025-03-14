@@ -258,7 +258,7 @@
 		</div>
 	{:else}
 		<div class="text-center">
-			<button class="btn btn-outline-danger p-3 w-50" onclick={closeScanner}> Close </button>
+			<button class="btn btn-outline-danger py-2" onclick={closeScanner}> Close </button>
 		</div>
 	{/if}
 
