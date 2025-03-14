@@ -10,6 +10,8 @@
 	let meetings = $state(null);
 
 	let attendance = $state(null);
+
+	let attendancePercentage = $state(0);
 	let canvas;
 
 	let uid = $state('');
@@ -51,8 +53,6 @@
 				{ event: 'INSERT', schema: 'public', table: 'attendance' },
 				(payload) => {
 					if (payload.new.uid == uid) {
-						alert('Attendance Signed');
-
 						async function fetchData() {
 							uid = await getUid();
 							// Fetch initial attended meetings
@@ -61,6 +61,75 @@
 							if (error) console.error('Error fetching blogs:', error);
 							else {
 								attendance = await data.length;
+								Swal.fire({
+									icon: 'success',
+									title: 'Attendance has been recorded!',
+									showConfirmButton: false,
+									timer: 1500,
+									background: '#1e1e2f',
+									color: '#ffffff',
+									iconColor: '#4caf50'
+								});
+							}
+						}
+
+						fetchData();
+					}
+				}
+			)
+			.on(
+				'postgres_changes',
+				{ event: 'DELETE', schema: 'public', table: 'attendance' },
+				(payload) => {
+					if (payload.new.uid == uid) {
+						async function fetchData() {
+							uid = await getUid();
+							// Fetch initial attended meetings
+							const { data, error } = await supabase.from('attendance').select('*').eq('uid', uid);
+
+							if (error) console.error('Error fetching blogs:', error);
+							else {
+								attendance = await data.length;
+								Swal.fire({
+									icon: 'success',
+									title: 'Attendance has been updated',
+									showConfirmButton: false,
+									timer: 1500,
+									background: '#1e1e2f',
+									color: '#ffffff',
+									iconColor: '#4caf50'
+								});
+							}
+						}
+
+						fetchData();
+
+						console.log(payload);
+					}
+				}
+			)
+			.on(
+				'postgres_changes',
+				{ event: 'UPDATE', schema: 'public', table: 'attendance' },
+				(payload) => {
+					if (payload.new.uid == uid) {
+						async function fetchData() {
+							uid = await getUid();
+							// Fetch initial attended meetings
+							const { data, error } = await supabase.from('attendance').select('*').eq('uid', uid);
+
+							if (error) console.error('Error fetching blogs:', error);
+							else {
+								attendance = await data.length;
+								Swal.fire({
+									icon: 'success',
+									title: 'Attendance has been recorded!',
+									showConfirmButton: false,
+									timer: 1500,
+									background: '#1e1e2f',
+									color: '#ffffff',
+									iconColor: '#4caf50'
+								});
 							}
 						}
 
@@ -143,13 +212,21 @@
 
 	const { reg_number, first_name, last_name, phone_number, registered, renewed } = data;
 
+	setInterval(() => {
+		if (attendance > 0 && meetings > 0 && attendance <= meetings) {
+			attendancePercentage = (attendance / meetings) * 100;
+			attendancePercentage = attendancePercentage.toFixed(2);
+		} else {
+			attendancePercentage = 0;
+		}
+	}, 1000);
+
 	let user = $state({
 		name: first_name + ' ' + last_name,
 		phone: phone_number,
 		regNo: reg_number,
 		isRegistered: registered,
 		isRenewed: renewed,
-		attendance: 38,
 		profile: 'avator.svg'
 	});
 </script>
@@ -176,15 +253,11 @@
 
 	<!-- Attendance Section -->
 	<div class="text-center mb-5">
-		<h2 class="mb-3">Attendance: {user.attendance}%</h2>
+		<h2 class="mb-3">Attendance: {attendancePercentage}%</h2>
 		<div class="attendance-bar mx-auto">
-			<div class="attendance-progress" style={`width: ${user.attendance}%`}></div>
+			<div class="attendance-progress" style={`width: ${attendancePercentage}%`}></div>
 		</div>
 	</div>
-
-	{meetings}
-
-	{attendance}
 
 	<!-- Action Cards -->
 	<div class="row justify-content-center g-4">

@@ -156,7 +156,7 @@
 	const clearAttendance = async () => {
 		// Show the confirmation dialog
 		const result = await Swal.fire({
-			title: 'Are you sure you want to clear attendance? 🤔',
+			title: 'Are you sure you want to clear attendance cache? 🤔',
 			text: 'This action cannot be undone 💀',
 			html: ``,
 			background: '#1a1a1a',
@@ -241,7 +241,7 @@
 			<div class="col-12 col-md-auto">
 				{#if attendanceSigned.length > 0}
 					<button class="btn btn-outline-danger w-100" onclick={clearAttendance}>
-						Clear Attendance
+						Clear Attendance Cache
 					</button>
 				{/if}
 			</div>
@@ -268,7 +268,7 @@
 	{:then}
 		{#if uids.length > 0}
 			<h2 class="mt-5 text-center">
-				Attendance Signed: <span class="text-success">{uids.length}</span>
+				Attendance Signed Today: <span class="text-success">{uids.length}</span>
 			</h2>
 		{/if}
 	{/await}
