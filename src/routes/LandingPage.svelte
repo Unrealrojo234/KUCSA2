@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	export let user;
 	import { supabase } from '$lib/supabaseClient';
+	import UpcomingEvents from './UpcomingEvents.svelte';
 </script>
 
 <section
@@ -18,14 +19,14 @@
 		{/if}
 		<p class="lead">Your Gateway to Computing Excellence</p>
 		{#if !user}
-			<a href="/auth/login" style="text-decoration: none;" class="cta-button">login</a>
+			<a href="/auth/login" style="text-decoration: none;border:none;" class="cta-button">login</a>
 		{/if}
 	</div>
 </section>
 
 <section id="about" class="py-5 bg-dark">
 	<div class="container text-center">
-		<h2 class="mb-5">About <span class="highlight">KUCSA</span></h2>
+		<h2 class="mb-4 display-4 fw-bold">About <span class="highlight">KUCSA</span></h2>
 		<p class="">
 			KUCSA is the premier computing club at Kisii University, dedicated to fostering innovation,
 			collaboration, and technical growth.
@@ -74,34 +75,9 @@
 	</div>
 </section>
 
-<section id="events" class="py-5 bg-dark">
-	<div class="container text-center">
-		<h2 class="mb-4">Upcoming <span class="highlight">Events</span></h2>
-		<div class="row justify-content-center">
-			<div class="col-md-4 mb-4">
-				<div class="event-card">
-					<h3>Hackathon 2023</h3>
-					<p>Date: November 15-16</p>
-					<a href="#register" class="btn cta-button">View</a>
-				</div>
-			</div>
-			<div class="col-md-4 mb-4">
-				<div class="event-card">
-					<h3>AI Workshop</h3>
-					<p>Date: December 5</p>
-					<a href="#register" class="btn cta-button">View</a>
-				</div>
-			</div>
-			<div class="col-md-4 mb-4">
-				<div class="event-card">
-					<h3>Tech Talk: Blockchain</h3>
-					<p>Date: January 10</p>
-					<a href="#register" class="btn cta-button">View</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+<UpcomingEvents />
+
+<section id="events" class="py-5 bg-dark"></section>
 
 <section class="bg-dark py-5">
 	<div class="container text-center">
@@ -127,33 +103,6 @@
 </footer>
 
 <style>
-	/* Custom styles to complement Bootstrap */
-	:global(body) {
-		background-color: #222428;
-		color: rgba(250, 248, 248, 0.836);
-		font-family: 'Arial', sans-serif;
-	}
-
-	.highlight {
-		color: #7bff00;
-	}
-
-	.icon-card,
-	.event-card {
-		background-color: #00b492;
-		padding: 20px;
-		border-radius: 10px;
-		transition:
-			transform 0.3s,
-			box-shadow 0.3s;
-	}
-
-	.icon-card:hover,
-	.event-card:hover {
-		transform: translateY(-10px);
-		box-shadow: 0 10px 20px rgba(123, 255, 0, 0.2);
-	}
-
 	.hero-background {
 		position: absolute;
 

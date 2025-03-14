@@ -93,10 +93,4 @@
 	td {
 		border-bottom: 1px solid #ddd;
 	}
-
-	p {
-		text-align: center;
-		color: #00b492;
-		font-size: 18px;
-	}
 </style>
