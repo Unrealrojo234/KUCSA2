@@ -4,10 +4,13 @@
 	import SignAttendance from '$lib/signAttendance';
 	import Swal from 'sweetalert2';
 	import { supabase } from '$lib/supabaseClient';
+	import Meetings from '$lib/meetings';
 
 	let attendanceSigned = $state([]);
 	let scanner = $state(false);
 	let scanResult = $state('');
+
+	let meetings = $state(null);
 
 	let uids = $state([]);
 
@@ -22,6 +25,7 @@
 					// Handle update
 					uids = payload.new.uids;
 					attendanceSigned = uids;
+					meetings = payload.new.meetings;
 				}
 			)
 			.subscribe();
@@ -33,19 +37,19 @@
 	});
 
 	$effect(async () => {
-		// Fetch initial scanned uids
+		// Fetch initial scanned uids & meetngs count
 		const { data, error } = await supabase
 			.from('checker')
-			.select('uids')
+			.select('*')
 			.eq('id', 1)
 			.order('created_at', { ascending: false });
 
 		if (error) console.error('Error fetching blogs:', error);
-		else uids = data[0].uids;
-
-		attendanceSigned = uids;
-
-		console.log(data);
+		else {
+			uids = data[0].uids;
+			attendanceSigned = uids;
+			meetings = data[0].meetings;
+		}
 	});
 
 	const alerts = (icon, title) => {
@@ -179,47 +183,114 @@
 			return false;
 		}
 	};
+
+	const updateMeetings = () => {
+		Swal.fire({
+			title: 'Input the meetings count.',
+			input: 'number',
+			inputAttributes: {
+				autocapitalize: 'off'
+			},
+			showCancelButton: true,
+			confirmButtonText: 'Update',
+			background: '#1a1a1a',
+			color: 'whitesmoke',
+			showLoaderOnConfirm: true,
+			preConfirm: async (count) => {
+				try {
+					if (count < 1) {
+						alerts('error', 'Meetings count cannot be less than 1');
+					} else {
+						let isSuccess = await Meetings(count);
+
+						if (isSuccess) {
+							console.log('Success');
+							alerts('success', 'Meetings Updated Successfully');
+						} else {
+							alerts('error', 'An error Occurred');
+							console.log('Failed');
+						}
+					}
+				} catch (error) {
+					Swal.showValidationMessage(`
+        Request failed: ${error}
+      `);
+				}
+			},
+			allowOutsideClick: () => !Swal.isLoading()
+		});
+	};
 </script>
 
-<div id="qr-reader" class="mb-5 px-2"></div>
+<main style="overflow-x: hidden;">
+	<h2 class="mb-4 display-4 text-center">Attendance</h2>
+	<!-- QR Reader -->
+	<div id="qr-reader" class="mb-5 px-2"></div>
 
-{#if !scanner}
-	<div class="text-center">
-		<button
-			class="cta-button btn"
-			onclick={() => {
-				Scan();
-			}}>Scan</button
-		>
-		{#if attendanceSigned.length > 0}
-			&nbsp; &nbsp; &nbsp;
-			<button class="btn btn-outline-danger p-3" onclick={clearAttendance}
-				>Clear Attendance
-			</button>
+	<!-- Buttons Section -->
+	{#if !scanner}
+		<div class="text-center row justify-content-center g-3">
+			<div class="col-12 col-md-auto">
+				<button
+					class=" btn btn-outline-primary w-100"
+					onclick={() => {
+						Scan();
+					}}>Scan QR-Codes</button
+				>
+			</div>
+			<div class="col-12 col-md-auto">
+				{#if attendanceSigned.length > 0}
+					<button class="btn btn-outline-danger w-100" onclick={clearAttendance}>
+						Clear Attendance
+					</button>
+				{/if}
+			</div>
+			<div class="col-12 col-md-auto">
+				<button
+					class="btn btn-outline-warning w-100"
+					onclick={() => {
+						updateMeetings();
+					}}
+				>
+					Set Meetings
+				</button>
+			</div>
+		</div>
+	{:else}
+		<div class="text-center">
+			<button class="btn btn-outline-danger p-3 w-50" onclick={closeScanner}> Close </button>
+		</div>
+	{/if}
+
+	<!-- Attendance Section -->
+	{#await uids}
+		<p class="text-center mt-3">Loading...</p>
+	{:then}
+		{#if uids.length > 0}
+			<h2 class="mt-5 text-center">
+				Attendance Signed: <span class="text-success">{uids.length}</span>
+			</h2>
 		{/if}
-	</div>
-{:else}
-	<div class="text-center">
-		<button class="btn btn-outline-danger p-3" style="width: 8rem;" onclick={closeScanner}
-			>Close
-		</button>
-	</div>
-{/if}
+	{/await}
 
-{#await uids}
-	<p>Loading</p>
-{:then}
-	{#if uids.length > 0}
-		<h2 class="mt-5 text-center">
-			Attendance Signed: <span class="text-success">{uids.length}</span>
+	<!--Meetings count section-->
+	{#if meetings}
+		<h2 class="mt-3 text-center">
+			Total Meetings No: <span class="text-success">{meetings}</span>
 		</h2>
 	{/if}
-{/await}
+</main>
 
 <style>
 	#qr-reader {
 		width: 100%;
 		max-width: 500px;
 		margin: 0 auto;
+	}
+
+	@media (max-width: 769px) {
+		.btn {
+			width: 50% !important;
+		}
 	}
 </style>
