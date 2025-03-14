@@ -26,7 +26,7 @@ async function registrationRenewal(uid, type) {
 		const { data, error: updateError } = await supabase
 			.from('profiles')
 			.update(updates)
-			.eq('id', uid) // Correct usage of .eq()
+			.eq('id', uid)
 			.select('*');
 
 		if (updateError) {

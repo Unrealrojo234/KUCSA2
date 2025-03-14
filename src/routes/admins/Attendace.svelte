@@ -3,10 +3,48 @@
 	import { Html5Qrcode } from 'html5-qrcode';
 	import SignAttendance from '$lib/signAttendance';
 	import Swal from 'sweetalert2';
+	import { supabase } from '$lib/supabaseClient';
 
 	let attendanceSigned = $state([]);
 	let scanner = $state(false);
 	let scanResult = $state('');
+
+	let uids = $state([]);
+
+	onMount(() => {
+		// Subscribe to realtime changes for the 'uids' table
+		const subscription = supabase
+			.channel('public:checker') // Channel name
+			.on(
+				'postgres_changes',
+				{ event: 'UPDATE', schema: 'public', table: 'checker' },
+				(payload) => {
+					// Handle update
+					uids = payload.new.uids;
+					//uids = uids.map((comment) => (comment.id === payload.new.id ? payload.new : comment));
+				}
+			)
+			.subscribe();
+
+		// Cleanup subscription on component unmount
+		return () => {
+			supabase.removeChannel(subscription);
+		};
+	});
+
+	$effect(async () => {
+		// Fetch initial scanned uids
+		const { data, error } = await supabase
+			.from('checker')
+			.select('uids')
+			.eq('id', 1)
+			.order('created_at', { ascending: false });
+
+		if (error) console.error('Error fetching blogs:', error);
+		else uids = data[0].uids;
+
+		console.log(data);
+	});
 
 	const alerts = (icon, title) => {
 		Swal.fire({
@@ -108,6 +146,16 @@
 		</button>
 	</div>
 {/if}
+
+{#await uids}
+	<p>Loading</p>
+{:then}
+	<ol>
+		{#each uids as uid}
+			<li>{uid}</li>
+		{/each}
+	</ol>
+{/await}
 
 <style>
 	#qr-reader {
