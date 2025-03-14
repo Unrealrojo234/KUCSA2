@@ -9,7 +9,6 @@ const SignAttendance = async (uid) => {
 		});
 
 		if (!response.ok) {
-			// Handle HTTP errors (4xx, 5xx)
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 

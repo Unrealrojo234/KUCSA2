@@ -21,7 +21,7 @@
 				(payload) => {
 					// Handle update
 					uids = payload.new.uids;
-					//uids = uids.map((comment) => (comment.id === payload.new.id ? payload.new : comment));
+					attendanceSigned = uids;
 				}
 			)
 			.subscribe();
@@ -43,6 +43,8 @@
 		if (error) console.error('Error fetching blogs:', error);
 		else uids = data[0].uids;
 
+		attendanceSigned = uids;
+
 		console.log(data);
 	});
 
@@ -56,6 +58,27 @@
 			color: '#ffffff',
 			iconColor: icon === 'success' ? '#4caf50' : '#f44336'
 		});
+	};
+
+	const insertUids = (uids) => {
+		try {
+			fetch('/database/insertion/uids', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					uids: { uids: uids }
+				})
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log(data);
+				})
+				.catch((error) => console.log('Error ', error));
+		} catch (error) {
+			console.log('Error', error);
+		}
 	};
 
 	const Scan = async () => {
@@ -79,6 +102,8 @@
 						console.log('Scanned:', decodedText);
 
 						attendanceSigned.push(scanResult);
+
+						insertUids(attendanceSigned);
 
 						alerts('success', 'Attendance Signed Successfully');
 					} else {
@@ -123,13 +148,41 @@
 				});
 		}
 	});
+
+	const clearAttendance = async () => {
+		// Show the confirmation dialog
+		const result = await Swal.fire({
+			title: 'Are you sure you want to clear attendance? 🤔',
+			text: 'This action cannot be undone 💀',
+			html: ``,
+			background: '#1a1a1a',
+			color: 'whitesmoke',
+			showDenyButton: true,
+			confirmButtonText: 'Yes',
+			denyButtonText: 'No',
+			customClass: {
+				confirmButton: 'neon-confirm-button',
+				denyButton: 'neon-deny-button'
+			},
+			buttonsStyling: false
+		});
+
+		// Handle the result of the confirmation dialog
+		if (result.isConfirmed) {
+			await insertUids([]);
+			if (attendanceSigned) {
+				alerts('success', 'Attendance Cleared Successfully');
+			} else {
+				alerts('error', 'An error occurred!');
+			}
+		} else if (result.isDenied) {
+			return false;
+		}
+	};
 </script>
 
-<div id="qr-reader" class="mb-5"></div>
+<div id="qr-reader" class="mb-5 px-2"></div>
 
-{#if scanResult}
-	<p class="text-center">Scanned QR Code: {scanResult}</p>
-{/if}
 {#if !scanner}
 	<div class="text-center">
 		<button
@@ -138,6 +191,12 @@
 				Scan();
 			}}>Scan</button
 		>
+		{#if attendanceSigned.length > 0}
+			&nbsp; &nbsp; &nbsp;
+			<button class="btn btn-outline-danger p-3" onclick={clearAttendance}
+				>Clear Attendance
+			</button>
+		{/if}
 	</div>
 {:else}
 	<div class="text-center">
@@ -150,11 +209,11 @@
 {#await uids}
 	<p>Loading</p>
 {:then}
-	<ol>
-		{#each uids as uid}
-			<li>{uid}</li>
-		{/each}
-	</ol>
+	{#if uids.length > 0}
+		<h2 class="mt-5 text-center">
+			Attendance Signed: <span class="text-success">{uids.length}</span>
+		</h2>
+	{/if}
 {/await}
 
 <style>
