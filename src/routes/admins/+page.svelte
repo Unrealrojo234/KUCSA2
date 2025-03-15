@@ -1,6 +1,7 @@
 <script>
 	import Attendace from './Attendace.svelte';
 	import AllMembers from './AllMembers.svelte';
+	import RegistRenewal from './Regist&Renewal.svelte';
 
 	let showAttendance = $state(false);
 
@@ -24,7 +25,7 @@
 
 <main>
 	<h1 class="text-center">KUCSA &nbsp;Admins Dashboard</h1>
-	<div style="padding: 12px" class="mb-3">
+	<div style="padding: 12px" class="mb-3 text-center">
 		<!-- svelte-ignore a11y_invalid_attribute -->
 		<a
 			href="#"
@@ -40,6 +41,33 @@
 				toggleShow('attendance');
 			}}>Mark Attendance</a
 		>
+
+		&nbsp;&nbsp;
+		<!-- svelte-ignore a11y_invalid_attribute -->
+		<a
+			href="#"
+			onclick={() => {
+				toggleShow('attendance');
+			}}>Registration & Renewal</a
+		>
+
+		&nbsp;&nbsp;
+		<!-- svelte-ignore a11y_invalid_attribute -->
+		<a
+			href="#"
+			onclick={() => {
+				toggleShow('attendance');
+			}}>Upcoming Events</a
+		>
+
+		&nbsp;&nbsp;
+		<!-- svelte-ignore a11y_invalid_attribute -->
+		<a
+			href="#"
+			onclick={() => {
+				toggleShow('attendance');
+			}}>Configurations</a
+		>
 	</div>
 
 	{#if showAttendance}
@@ -47,6 +75,7 @@
 	{:else if showMembers}
 		<AllMembers />
 	{/if}
+	<RegistRenewal />
 </main>
 
 <style>
