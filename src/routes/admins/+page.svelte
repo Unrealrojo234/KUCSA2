@@ -2,6 +2,8 @@
 	import Attendace from './Attendace.svelte';
 	import AllMembers from './AllMembers.svelte';
 	import RegistRenewal from './Regist&Renewal.svelte';
+	import UpComingEvents from './Events.svelte';
+	import Events from './Events.svelte';
 
 	let showAttendance = $state(false);
 
@@ -85,6 +87,7 @@
 	{:else if showRegistrationRenewal}
 		<RegistRenewal />
 	{/if}
+	<Events />
 </main>
 
 <style>

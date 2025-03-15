@@ -64,17 +64,25 @@
 		{:then events}
 			{#if events.length > 0}
 				{#each events as event}
-					<div class="col-md-4 mb-4" style="max-width: 20rem;">
-						<div class=" icon-card card h-100 shadow-sm border-0">
+					<div class="col-md-4 mb-4" style="max-width: 100%">
+						<div class=" icon-card card shadow-sm border-0">
 							<div class="card-body">
 								<h3 class="card-title fw-bold">{event.name}</h3>
-								<img
-									src={event.imageUrl}
-									class="img-fluid rounded-3 mt-2 mb-3"
-									alt={`${event.name} image`}
-									loading="lazy"
-								/>
+								{#if event.imageUrl}
+									<img
+										style="height: 8rem;width:max-content"
+										src={event.imageUrl}
+										class="img-fluid rounded-3"
+										alt={`${event.name} image`}
+										loading="lazy"
+									/>
+								{/if}
 								<p class="card-text text-muted">Date: {event.date}</p>
+								{#if event.venue}
+									<p>
+										Venue: {event.venue}
+									</p>
+								{/if}
 								{#if event.link}
 									<a href={event.link} target="_blank" class="btn btn-primary cta-button"> View </a>
 								{/if}
@@ -91,3 +99,11 @@
 		{/await}
 	</div>
 </div>
+
+<style>
+	img {
+		border-radius: 50% !important;
+		width: 8rem !important;
+		height: 8rem !important;
+	}
+</style>
