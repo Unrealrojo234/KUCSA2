@@ -23,7 +23,7 @@
 	async function registrationRenewal(reg, type) {
 		try {
 			const updates = {};
-			updates[type] = true; // Dynamically set the key based on the type
+			updates[type] = true;
 
 			const { data, error: updateError } = await supabase
 				.from('profiles')
@@ -31,28 +31,20 @@
 				.eq('reg_number', reg)
 				.select('*');
 
-			if (updateError) {
-				console.error('Error updating profile:', updateError.message);
-				alerts('error', updateError);
-				throw updateError;
-			}
-
-			console.log(data);
+			if (updateError) throw updateError;
 
 			alerts('success', 'Record Updated Successfully!');
-
-			return data; // Return the updated data
+			return data;
 		} catch (error) {
-			console.error('Error in registrationRenewal:', error.message);
-			alerts('error', 'An error occurred!');
-			throw error;
+			console.error('Error:', error.message);
+			alerts('error', error.message);
 		}
 	}
 
 	async function revokeRegistrationRenewal(reg, type) {
 		try {
 			const updates = {};
-			updates[type] = false; // Dynamically set the key based on the type
+			updates[type] = false;
 
 			const { data, error: updateError } = await supabase
 				.from('profiles')
@@ -60,21 +52,13 @@
 				.eq('reg_number', reg)
 				.select('*');
 
-			if (updateError) {
-				console.error('Error updating profile:', updateError.message);
-				alerts('error', updateError);
-				throw updateError;
-			}
-
-			console.log(data);
+			if (updateError) throw updateError;
 
 			alerts('success', 'Record Updated Successfully!');
-
-			return data; // Return the updated data
+			return data;
 		} catch (error) {
-			console.error('Error in registrationRenewal:', error.message);
-			alerts('error', 'An error occurred!');
-			throw error;
+			console.error('Error:', error.message);
+			alerts('error', error.message);
 		}
 	}
 </script>
@@ -82,107 +66,95 @@
 <main class="container-fluid py-4">
 	<h2 class="text-center mb-4">Manage Registration/Renewal</h2>
 	<div class="row justify-content-center">
+		<!-- Left Column (Register/Renew) -->
 		<div class="col-md-5 col-sm-12 mb-4">
 			{#if register}
 				<!-- Register Form -->
 				<form
-					onsubmit={() => {
-						regNo2 = regNo2.toUpperCase();
-						revokeRegistrationRenewal(regNo2, 'registered');
+					onsubmit={async () => {
+						regNo = regNo.toUpperCase();
+						await registrationRenewal(regNo, 'registered');
 					}}
 					class="form form-control"
 				>
 					<p class="title">Register</p>
 					<label>
-						<input class="input" bind:value={regNo2} type="text" placeholder="" required />
+						<input class="input" bind:value={regNo} type="text" required />
 						<span>Reg No.</span>
 					</label>
 					<br />
 					<button class="submit btn btn-success">Register</button>
-
 					<!-- svelte-ignore a11y_invalid_attribute -->
-					<a
-						href="#"
-						onclick={() => {
-							register = register ? false : true;
-						}}>{register ? 'Renew' : 'Register'}</a
+					<a href="#" onclick={() => (register = !register)}
+						>{register ? 'Switch to Renew' : 'Switch to Register'}</a
 					>
 				</form>
 			{:else}
 				<!-- Renew Form -->
 				<form
-					onsubmit={() => {
-						regNo2 = regNo2.toUpperCase();
-						revokeRegistrationRenewal(regNo, 'renewed');
+					onsubmit={async () => {
+						regNo = regNo.toUpperCase();
+						await registrationRenewal(regNo, 'renewed');
 					}}
 					class="form form-control"
 				>
 					<p class="title">Renew</p>
 					<label>
-						<input class="input" bind:value={regNo} type="text" placeholder="" required />
+						<input class="input" bind:value={regNo} type="text" required />
 						<span>Reg No.</span>
 					</label>
 					<br />
 					<button class="submit btn btn-success">Renew</button>
 					<!-- svelte-ignore a11y_invalid_attribute -->
-					<a
-						href="#"
-						onclick={() => {
-							register = register ? false : true;
-						}}>{register ? 'Renew' : 'Register'}</a
+					<a href="#" onclick={() => (register = !register)}
+						>{register ? 'Switch to Renew' : 'Switch to Register'}</a
 					>
 				</form>
 			{/if}
 		</div>
 
+		<!-- Right Column (Revoke Actions) -->
 		<div class="col-md-5 col-sm-12 mb-4">
 			{#if register2}
-				<!-- Revoke Register Form -->
+				<!-- Revoke Register -->
 				<form
-					onsubmit={() => {
-						regNo = regNo.toUpperCase();
-						registrationRenewal(regNo, 'registered');
+					onsubmit={async () => {
+						regNo2 = regNo2.toUpperCase();
+						await revokeRegistrationRenewal(regNo2, 'registered');
 					}}
 					class="form form-control"
 				>
 					<p class="title">Revoke Register</p>
 					<label>
-						<input class="input" bind:value={regNo} type="text" placeholder="" required />
+						<input class="input" bind:value={regNo2} type="text" required />
 						<span>Reg No.</span>
 					</label>
 					<br />
 					<button class="submit btn btn-danger">Revoke Register</button>
-
 					<!-- svelte-ignore a11y_invalid_attribute -->
-					<a
-						href="#"
-						onclick={() => {
-							register2 = register2 ? false : true;
-						}}>{register2 ? 'Revoke Renew' : 'Revoke Register'}</a
+					<a href="#" onclick={() => (register2 = !register2)}
+						>{register2 ? 'Switch to Revoke Renew' : 'Switch to Revoke Register'}</a
 					>
 				</form>
 			{:else}
-				<!-- Revoke Renew Form -->
+				<!-- Revoke Renew -->
 				<form
-					onsubmit={() => {
-						regNo = regNo.toUpperCase();
-						registrationRenewal(regNo, 'renewed');
+					onsubmit={async () => {
+						regNo2 = regNo2.toUpperCase();
+						await revokeRegistrationRenewal(regNo2, 'renewed');
 					}}
 					class="form form-control"
 				>
 					<p class="title">Revoke Renew</p>
 					<label>
-						<input class="input" bind:value={regNo} type="text" placeholder="" required />
+						<input class="input" bind:value={regNo2} type="text" required />
 						<span>Reg No.</span>
 					</label>
 					<br />
 					<button class="submit btn btn-danger">Revoke Renew</button>
 					<!-- svelte-ignore a11y_invalid_attribute -->
-					<a
-						href="#"
-						onclick={() => {
-							register2 = register2 ? false : true;
-						}}>{register2 ? 'Revoke Renew' : 'Revoke Register'}</a
+					<a href="#" onclick={() => (register2 = !register2)}
+						>{register2 ? 'Switch to Revoke Renew' : 'Switch to Revoke Register'}</a
 					>
 				</form>
 			{/if}

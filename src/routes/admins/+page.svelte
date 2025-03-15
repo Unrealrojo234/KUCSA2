@@ -7,16 +7,24 @@
 
 	let showMembers = $state(false);
 
+	let showRegistrationRenewal = $state(false);
+
 	const toggleShow = (show) => {
 		switch (show) {
 			case 'attendance':
 				showAttendance = true;
 				showMembers = false;
+				showRegistrationRenewal = false;
 				break;
 			case 'members':
 				showMembers = true;
 				showAttendance = false;
+				showRegistrationRenewal = false;
 				break;
+			case 'registationRenewal':
+				showMembers = false;
+				showAttendance = false;
+				showRegistrationRenewal = true;
 			default:
 				break;
 		}
@@ -47,7 +55,7 @@
 		<a
 			href="#"
 			onclick={() => {
-				toggleShow('attendance');
+				toggleShow('registationRenewal');
 			}}>Registration & Renewal</a
 		>
 
@@ -74,8 +82,9 @@
 		<Attendace />
 	{:else if showMembers}
 		<AllMembers />
+	{:else if showRegistrationRenewal}
+		<RegistRenewal />
 	{/if}
-	<RegistRenewal />
 </main>
 
 <style>
