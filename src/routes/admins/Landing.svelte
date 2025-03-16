@@ -31,7 +31,7 @@
 			console.log('Error fetching data');
 		}
 	});
-	// Add percentage calculations
+	// Add percentage calculationsb
 	let registeredPercentage = $derived(
 		totalMembers ? Math.round((registeredMembers / totalMembers) * 100) : 0
 	);

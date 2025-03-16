@@ -17,6 +17,10 @@
 
 	let showStats = $state(true);
 
+	const { data } = $props();
+
+	console.table(data);
+
 	const toggleShow = (show) => {
 		switch (show) {
 			case 'attendance':
@@ -60,80 +64,90 @@
 	};
 </script>
 
-<main>
-	<h1 class="text-center">KUCSA &nbsp;Admins Dashboard</h1>
-	<div style="padding: 12px" class="mb-3 text-center">
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a
-			style="color: {showMembers ? '#09ffd2' : '#00b492'};text-decoration:{showMembers
-				? 'underline'
-				: 'none'};"
-			href="#"
-			onclick={() => {
-				toggleShow('members');
-			}}>Members</a
-		>
-		&nbsp;&nbsp;
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a
-			style="color: {showAttendance ? '#09ffd2' : '#00b492'};text-decoration:{showAttendance
-				? 'underline'
-				: 'none'};"
-			href="#"
-			onclick={() => {
-				toggleShow('attendance');
-			}}>Mark Attendance</a
-		>
+{#await data}
+	<p>Loading</p>
+{:then}
+	{#if data.admin}
+		<main>
+			<h1 class="text-center">KUCSA &nbsp;Admins Dashboard</h1>
+			<div style="padding: 12px" class="mb-3 text-center">
+				<!-- svelte-ignore a11y_invalid_attribute -->
+				<a
+					style="color: {showMembers ? '#09ffd2' : '#00b492'};text-decoration:{showMembers
+						? 'underline'
+						: 'none'};"
+					href="#"
+					onclick={() => {
+						toggleShow('members');
+					}}>Members</a
+				>
+				&nbsp;&nbsp;
+				<!-- svelte-ignore a11y_invalid_attribute -->
+				<a
+					style="color: {showAttendance ? '#09ffd2' : '#00b492'};text-decoration:{showAttendance
+						? 'underline'
+						: 'none'};"
+					href="#"
+					onclick={() => {
+						toggleShow('attendance');
+					}}>Mark Attendance</a
+				>
 
-		&nbsp;&nbsp;
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a
-			href="#"
-			style="color: {showRegistrationRenewal
-				? '#09ffd2'
-				: '#00b492'};text-decoration:{showRegistrationRenewal ? 'underline' : 'none'};"
-			onclick={() => {
-				toggleShow('registationRenewal');
-			}}>Registration & Renewal</a
-		>
+				&nbsp;&nbsp;
+				<!-- svelte-ignore a11y_invalid_attribute -->
+				<a
+					href="#"
+					style="color: {showRegistrationRenewal
+						? '#09ffd2'
+						: '#00b492'};text-decoration:{showRegistrationRenewal ? 'underline' : 'none'};"
+					onclick={() => {
+						toggleShow('registationRenewal');
+					}}>Registration & Renewal</a
+				>
 
-		&nbsp;&nbsp;
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a
-			href="#"
-			style="color: {showUpcomingEvents ? '#09ffd2' : '#00b492'};text-decoration:{showUpcomingEvents
-				? 'underline'
-				: 'none'};"
-			onclick={() => {
-				toggleShow('upcomingEvents');
-			}}>Upcoming Events</a
-		>
+				&nbsp;&nbsp;
+				<!-- svelte-ignore a11y_invalid_attribute -->
+				<a
+					href="#"
+					style="color: {showUpcomingEvents
+						? '#09ffd2'
+						: '#00b492'};text-decoration:{showUpcomingEvents ? 'underline' : 'none'};"
+					onclick={() => {
+						toggleShow('upcomingEvents');
+					}}>Upcoming Events</a
+				>
 
-		&nbsp;&nbsp;
-		<!-- svelte-ignore a11y_invalid_attribute -->
-		<a
-			href="#"
-			style="color: {showStats ? '#09ffd2' : '#00b492'};text-decoration:{showStats
-				? 'underline'
-				: 'none'};"
-			onclick={() => {
-				toggleShow('stats');
-			}}>Statistics</a
-		>
-	</div>
+				&nbsp;&nbsp;
+				<!-- svelte-ignore a11y_invalid_attribute -->
+				<a
+					href="#"
+					style="color: {showStats ? '#09ffd2' : '#00b492'};text-decoration:{showStats
+						? 'underline'
+						: 'none'};"
+					onclick={() => {
+						toggleShow('stats');
+					}}>Statistics</a
+				>
+			</div>
 
-	{#if showAttendance}
-		<Attendace />
-	{:else if showMembers}
-		<AllMembers />
-	{:else if showRegistrationRenewal}
-		<RegistRenewal />
-	{:else if showUpcomingEvents}
-		<Events />
-	{:else if showStats}
-		<Landing />
+			{#if showAttendance}
+				<Attendace />
+			{:else if showMembers}
+				<AllMembers />
+			{:else if showRegistrationRenewal}
+				<RegistRenewal />
+			{:else if showUpcomingEvents}
+				<Events />
+			{:else if showStats}
+				<Landing />
+			{/if}
+		</main>
+	{:else}
+		<div>
+			<p>You are not an admin</p>
+		</div>
 	{/if}
-</main>
+{/await}
 
 <style>
 	a {
