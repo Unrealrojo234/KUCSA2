@@ -38,7 +38,6 @@ export async function POST({ request }) {
 		]);
 
 		if (profileError) {
-			console.error('Profile error:', profileError.message);
 			return json({ error: 'Profile creation failed: ' + profileError.message }, { status: 400 });
 		}
 
@@ -46,7 +45,6 @@ export async function POST({ request }) {
 		return json({ message: 'Registration successful', user: authUser.user }, { status: 200 });
 	} catch (error) {
 		// Handle unexpected errors
-		console.error('Error processing request:', error);
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
 }

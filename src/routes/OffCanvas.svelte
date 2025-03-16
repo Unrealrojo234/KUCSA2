@@ -22,7 +22,6 @@
 			if (logoutSuccess) {
 				navigateAndRefresh();
 			} else {
-				console.log('Logout was canceled or failed');
 			}
 		} catch (error) {
 			// console.error('Logout failed:', error);
@@ -45,13 +44,11 @@
 		session = await getUid();
 
 		if (session) {
-			const uid = session.user.id;
+			const uid = session;
 			const { data, error } = await supabase.from('profiles').select('*').eq('id', uid);
 
-			if (data.isAdmin) {
+			if (data[0].isAdmin) {
 				isAdmin = true;
-			}
-			if (data.length > 0 && !data[0].isAdmin) {
 			}
 		}
 	});

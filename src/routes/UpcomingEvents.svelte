@@ -51,8 +51,6 @@
 
 		if (error) console.error('Error fetching blogs:', error);
 		else upcomingEvents = data;
-
-		console.log(data);
 	});
 </script>
 

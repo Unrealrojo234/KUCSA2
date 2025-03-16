@@ -81,7 +81,6 @@
 				goto('/');
 			}, 1500);
 		} catch (error) {
-			console.error('Login Error:', error.message);
 			showErrorLoginAlert();
 		}
 	}
