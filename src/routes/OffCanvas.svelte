@@ -90,7 +90,9 @@
 			<li><a href="/#about" style="color:#00b492 ;">About</a></li>
 			{#if session}
 				<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
-				<li><a href="/admins" style="color:#00b492 ;">Admin Dashboard</a></li>
+				{#if isAdmin}
+					<li><a href="/admins" style="color:#00b492 ;">Admin Dashboard</a></li>
+				{/if}
 				<li>
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_missing_attribute -->
