@@ -105,7 +105,7 @@
 				</li>
 			{:else}
 				<li><a style="color:#00b492 ;" href="/auth/login">Login</a></li>
-				<li><a style="color:#00b492 ;" href="/contact/auth/signup">Sign Up</a></li>
+				<li><a style="color:#00b492 ;" href="/auth/signup">Sign Up</a></li>
 			{/if}
 		</ul>
 	</div>
