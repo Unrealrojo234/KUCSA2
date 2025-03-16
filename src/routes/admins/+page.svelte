@@ -15,6 +15,8 @@
 
 	let showUpcomingEvents = $state(false);
 
+	let showStats = $state(true);
+
 	const toggleShow = (show) => {
 		switch (show) {
 			case 'attendance':
@@ -22,26 +24,36 @@
 				showMembers = false;
 				showRegistrationRenewal = false;
 				showUpcomingEvents = false;
+				showStats = false;
 				break;
 			case 'members':
 				showMembers = true;
 				showAttendance = false;
 				showRegistrationRenewal = false;
 				showUpcomingEvents = false;
+				showStats = false;
 				break;
 			case 'registationRenewal':
 				showMembers = false;
 				showAttendance = false;
 				showRegistrationRenewal = true;
 				showUpcomingEvents = false;
+				showStats = false;
 				break;
 			case 'upcomingEvents':
 				showMembers = false;
 				showAttendance = false;
 				showRegistrationRenewal = false;
 				showUpcomingEvents = true;
+				showStats = false;
 				break;
-
+			case 'stats':
+				showMembers = false;
+				showAttendance = false;
+				showRegistrationRenewal = false;
+				showUpcomingEvents = false;
+				showStats = true;
+				break;
 			default:
 				break;
 		}
@@ -101,9 +113,12 @@
 		<!-- svelte-ignore a11y_invalid_attribute -->
 		<a
 			href="#"
+			style="color: {showStats ? '#09ffd2' : '#00b492'};text-decoration:{showStats
+				? 'underline'
+				: 'none'};"
 			onclick={() => {
-				toggleShow('attendance');
-			}}>Configurations</a
+				toggleShow('stats');
+			}}>Statistics</a
 		>
 	</div>
 
@@ -115,7 +130,7 @@
 		<RegistRenewal />
 	{:else if showUpcomingEvents}
 		<Events />
-	{:else}
+	{:else if showStats}
 		<Landing />
 	{/if}
 </main>

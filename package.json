@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@supabase/supabase-js": "^2.49.1",
 		"@sveltestrap/sveltestrap": "^7.1.0",
+		"animate.css": "^4.1.1",
 		"bootstrap": "^5.3.3",
 		"html5-qrcode": "^2.3.8",
 		"qrcode": "^1.5.4",
