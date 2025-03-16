@@ -5,6 +5,7 @@
 	import { supabase } from '$lib/supabaseClient';
 	import UpcomingEvents from './UpcomingEvents.svelte';
 	import GiHubBtn from './GiHubBtn.svelte';
+	import TopDevs from './TopDevs.svelte';
 </script>
 
 <section
@@ -159,9 +160,18 @@
 	</div>
 </section>
 
-<UpcomingEvents />
+<div class="bg-dark">
+	<UpcomingEvents />
+</div>
 
 <section id="events" class="py-5 bg-dark"></section>
+
+<div class="bg-dark">
+	<h1 class="mb-4 display-4 fw-bold text-center">
+		Kisii <span class="text-danger">Top-Devs 📢</span>
+	</h1>
+	<TopDevs />
+</div>
 
 <section class="bg-dark py-5">
 	<div class="container text-center">
