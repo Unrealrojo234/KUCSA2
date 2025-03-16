@@ -125,197 +125,193 @@
 	}
 </script>
 
-<main>
-	<h2 class="text-center">Upcoming Events</h2>
+<main class="container-fluid px-4 py-5">
+	<h2 class="text-center mb-5 display-4 fw-bold">Upcoming Events Management</h2>
 
-	<div class="container text-center py-5">
-		<div class="row justify-content-center">
-			{#await upcomingEvents}
-				<p class="mt-2">Loading events...</p>
-			{:then events}
-				{#if events.length > 0}
-					{#each events as event}
-						<div class="col-md-4 mb-4" style="max-width: 20rem;">
-							<div class=" icon-card card h-100 shadow-sm border-0">
-								<div class="card-body">
-									<h3 class="card-title fw-bold">{event.name}</h3>
-									<img
-										src={event.imageUrl}
-										class="img-fluid rounded-3 mt-2 mb-3"
-										alt={`${event.name} image`}
-										loading="lazy"
-									/>
-									<p class="card-text text-muted">Date: {event.date}</p>
-									{#if event.link}
-										<a href={event.link} target="_blank" class="btn btn-primary cta-button">
-											View
-										</a>
+	<!-- Events Grid -->
+	<section class="mb-5">
+		<h3 class="mb-4 text-center">Current Events</h3>
+		<div class="container">
+			<div class="row g-4 justify-content-center">
+				{#await upcomingEvents}
+					<div class="col-12 text-center">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</div>
+				{:then events}
+					{#if events.length > 0}
+						{#each events as event}
+							<div class="col-lg-4 col-md-6">
+								<div class="card h-100 shadow-lg border-0">
+									{#if event.imageUrl}
+										<img
+											src={event.imageUrl}
+											class="card-img-top object-fit-cover"
+											alt={event.name}
+											style="height: 200px;"
+											loading="lazy"
+										/>
 									{/if}
-									{#if event.venue}
-										<p>Venue: {event.venue}</p>
-									{/if}
-									<button
-										class="btn btn-danger p-2 w-100 mt-4"
-										onclick={async () => {
-											await Delete(event.id);
-										}}>Delete</button
-									>
+									<div class="card-body d-flex flex-column">
+										<h4 class="card-title mb-3">{event.name}</h4>
+										<div class="mb-2">
+											<i class="bi bi-calendar me-2"></i>
+											{new Date(event.date).toLocaleDateString()}
+										</div>
+										{#if event.venue}
+											<div class="mb-2">
+												<i class="bi bi-geo-alt me-2"></i>
+												{event.venue}
+											</div>
+										{/if}
+										<div class="mt-auto">
+											{#if event.link}
+												<a
+													href={event.link}
+													class="btn btn-outline-primary w-100 mb-2"
+													target="_blank"
+												>
+													Event Details
+												</a>
+											{/if}
+											<button
+												class="btn btn-danger w-100"
+												onclick={async () => await Delete(event.id)}
+											>
+												Delete Event
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
+						{/each}
+					{:else}
+						<div class="col-12">
+							<div class="alert alert-info text-center">
+								No upcoming events scheduled. Check back later!
+							</div>
 						</div>
-					{/each}
-				{:else}
-					<!-- Fallback for no events -->
-					<div class="col-12">
-						<p class="text-muted">No upcoming events at the moment. Check back later!</p>
-					</div>
-				{/if}
-			{/await}
+					{/if}
+				{/await}
+			</div>
 		</div>
-	</div>
+	</section>
 
-	<div style="display: flex;justify-content:center;">
-		<!-- svelte-ignore event_directive_deprecated -->
-		<form class="form form-control" onsubmit={PostEvent}>
-			<p class="title">Post Events</p>
+	<!-- Event Creation Form -->
+	<section class="my-5">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<div class="card shadow border-0">
+						<div class="card-header bg-dark text-white">
+							<h3 class="mb-0">Create New Event</h3>
+						</div>
+						<div class="card-body">
+							<form onsubmit={PostEvent} class="needs-validation" novalidate>
+								<div class="row g-3">
+									<div class="col-md-12">
+										<!-- svelte-ignore a11y_label_has_associated_control -->
+										<label class="form-label">Event Name *</label>
+										<input bind:value={name} class="form-control" type="text" required />
+									</div>
 
-			<label>
-				<input bind:value={name} class="input" type="text" placeholder="" required />
-				<span>Name <span class="text-danger">*</span></span>
-			</label>
-			<br />
+									<div class="col-md-6">
+										<!-- svelte-ignore a11y_label_has_associated_control -->
+										<label class="form-label">Event Date *</label>
+										<input bind:value={date} class="form-control" type="date" required />
+									</div>
 
-			<label>
-				<input class="input" bind:value={date} type="date" placeholder="" required />
-				<span>Date <span class="text-danger">*</span></span>
-			</label>
-			<br />
+									<!-- svelte-ignore a11y_label_has_associated_control -->
+									<div class="col-md-6">
+										<label class="form-label">Venue</label>
+										<input bind:value={venue} class="form-control" type="text" />
+									</div>
 
-			<label>
-				<input class="input" bind:value={venue} type="text" placeholder="" />
-				<span>Venue</span>
-			</label>
-			<br />
+									<div class="col-12">
+										<!-- svelte-ignore a11y_label_has_associated_control -->
+										<label class="form-label">Image URL</label>
+										<input
+											bind:value={imageUrl}
+											class="form-control"
+											type="url"
+											placeholder="https://example.com/image.jpg"
+										/>
+									</div>
 
-			<label>
-				<input class="input" type="text" bind:value={imageUrl} placeholder="" />
-				<span>ImageUrl</span>
-			</label>
-			<br />
+									<div class="col-12">
+										<!-- svelte-ignore a11y_label_has_associated_control -->
+										<label class="form-label">Event Link</label>
+										<input
+											bind:value={link}
+											class="form-control"
+											type="url"
+											placeholder="https://example.com"
+										/>
+									</div>
 
-			<label>
-				<input class="input" type="text" bind:value={link} placeholder="" />
-				<span>Event Link</span>
-			</label>
-			<br />
-
-			<button class="submit btn btn-success">Post</button>
-		</form>
-	</div>
+									<div class="col-12 mt-4">
+										<button class="btn btn-success w-100 py-2" type="submit">
+											Publish Event
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </main>
 
 <style>
-	img {
-		border-radius: 50% !important;
-		width: 8rem !important;
-		height: 8rem !important;
-	}
-	.form {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		max-width: 32rem;
-		padding: 1.5rem;
-		border-radius: 20px;
-		position: relative;
-		background-color: #1a1a1a;
-		color: #fff;
-		border: 1px solid #333;
+	/* Base styles */
+	.card {
+		border-radius: 1rem;
+		transition: transform 0.2s;
 	}
 
-	.title {
-		font-size: 28px;
-		font-weight: 600;
-		letter-spacing: -1px;
-		position: relative;
-		display: flex;
-		align-items: center;
-		padding-left: 30px;
-		color: #00b492;
+	.card:hover {
+		transform: translateY(-5px);
 	}
 
-	.title::before {
-		width: 18px;
-		height: 18px;
+	.form-control {
+		border-radius: 0.5rem;
+		padding: 0.75rem 1rem;
 	}
 
-	.title::after {
-		width: 18px;
-		height: 18px;
-		animation: pulse 1s linear infinite;
+	.btn {
+		border-radius: 0.5rem;
+		font-weight: 500;
 	}
 
-	.title::before,
-	.title::after {
-		position: absolute;
-		content: '';
-		height: 16px;
-		width: 16px;
-		border-radius: 50%;
-		left: 0px;
-		background-color: #00b492;
+	/* Image handling */
+	.object-fit-cover {
+		object-fit: cover;
+		border-radius: 1rem 1rem 0 0;
 	}
 
-	.form label {
-		position: relative;
+	/* Form validation */
+	.needs-validation .form-control:invalid {
+		border-color: #dc3545;
 	}
 
-	.form label .input {
-		background-color: #333;
-		color: #fff;
-		width: 100%;
-		padding: 20px 05px 05px 10px;
-		outline: 0;
-		border: 1px solid rgba(105, 105, 105, 0.397);
-		border-radius: 10px;
+	.needs-validation .form-control:invalid:focus {
+		box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 	}
 
-	.form label .input + span {
-		color: rgba(255, 255, 255, 0.5);
-		position: absolute;
-		left: 10px;
-		top: 0px;
-		font-size: 0.9em;
-		cursor: text;
-		transition: 0.3s ease;
-	}
-
-	.form label .input:placeholder-shown + span {
-		top: 12.5px;
-		font-size: 0.9em;
-	}
-
-	.form label .input:focus + span,
-	.form label .input:valid + span {
-		color: #00b492;
-		top: 0px;
-		font-size: 0.7em;
-		font-weight: 600;
-	}
-
-	.input {
-		font-size: medium;
-	}
-
-	@keyframes pulse {
-		from {
-			transform: scale(0.9);
-			opacity: 1;
+	/* Dark mode compatibility */
+	@media (prefers-color-scheme: dark) {
+		.card {
+			background-color: #2d2d2d;
+			border-color: #404040;
 		}
 
-		to {
-			transform: scale(1.8);
-			opacity: 0;
+		.form-control {
+			background-color: #1a1a1a;
+			border-color: #404040;
+			color: #ffffff;
 		}
 	}
 </style>

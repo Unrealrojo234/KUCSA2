@@ -56,44 +56,76 @@
 	});
 </script>
 
-<div class="container text-center py-5">
-	<h2 class="mb-4 display-4 fw-bold">Upcoming <span class="highlight">Events</span> 🤓</h2>
-	<div class="row justify-content-center">
+<div class="container-fluid px-lg-5 py-5">
+	<div class="row justify-content-center mb-5">
+		<div class="col-12 text-center">
+			<h2 class="display-4 fw-bold mb-3">Upcoming <span class="text-primary">Events</span> 📅</h2>
+			<p class="lead text-muted">Discover what's happening next in our community</p>
+		</div>
+	</div>
+
+	<div class="row g-4 justify-content-center">
 		{#await upcomingEvents}
-			<p class="mt-2">Loading events...</p>
+			<div class="col-12 text-center">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+				<p class="mt-2 text-muted">Loading events...</p>
+			</div>
 		{:then events}
 			{#if events.length > 0}
 				{#each events as event}
-					<div class="col-md-4 mb-4" style="max-width: 100%">
-						<div class=" icon-card card shadow-sm border-0">
-							<div class="card-body">
-								<h3 class="card-title fw-bold">{event.name}</h3>
-								{#if event.imageUrl}
+					<div class="col-xl-3 col-lg-4 col-md-6">
+						<div class="card bg-dark h-100 shadow-lg border-0 hover-shadow transition-all">
+							{#if event.imageUrl}
+								<div class="card-img-top overflow-hidden position-relative" style="height: 200px;">
 									<img
-										style="height: 8rem;width:max-content"
 										src={event.imageUrl}
-										class="img-fluid rounded-3"
+										class="img-fluid w-100 h-100 object-fit-cover"
 										alt={`${event.name} image`}
 										loading="lazy"
 									/>
-								{/if}
-								<p class="card-text text-muted">Date: {event.date}</p>
-								{#if event.venue}
-									<p>
-										Venue: {event.venue}
-									</p>
-								{/if}
+								</div>
+							{/if}
+
+							<div class="card-body d-flex flex-column">
+								<h3 class="h4 card-title fw-bold mb-3">{event.name}</h3>
+
+								<div class="mb-3">
+									<div class="d-flex align-items-center mb-2">
+										<i class="bi bi-calendar-event me-2 text-primary"></i>
+										<span class="text-muted">Date: {event.date}</span>
+									</div>
+									{#if event.venue}
+										<div class="d-flex align-items-center">
+											<i class="bi bi-geo-alt me-2 text-primary"></i>
+											<span class="text-muted">Venue: {event.venue}</span>
+										</div>
+									{/if}
+								</div>
+
 								{#if event.link}
-									<a href={event.link} target="_blank" class="btn btn-primary cta-button"> View </a>
+									<div class="mt-auto">
+										<a
+											href={event.link}
+											target="_blank"
+											class="btn btn-success w-100 d-flex align-items-center justify-content-center"
+										>
+											<i class="bi bi-link-45deg me-2"></i>
+											Event Details
+										</a>
+									</div>
 								{/if}
 							</div>
 						</div>
 					</div>
 				{/each}
 			{:else}
-				<!-- Fallback for no events -->
-				<div class="col-12">
-					<p class="text-muted">No upcoming events at the moment. Check back later!</p>
+				<div class="col-12 col-md-8 col-lg-6 text-center">
+					<div class="alert alert-info shadow-sm">
+						<i class="bi bi-calendar-x me-2"></i>
+						No upcoming events scheduled. Check back soon!
+					</div>
 				</div>
 			{/if}
 		{/await}
@@ -101,9 +133,34 @@
 </div>
 
 <style>
-	img {
-		border-radius: 50% !important;
-		width: 8rem !important;
-		height: 8rem !important;
+	.hover-shadow {
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.hover-shadow:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+	}
+
+	.object-fit-cover {
+		object-fit: cover;
+	}
+
+	.transition-all {
+		transition: all 0.2s ease;
+	}
+
+	.card {
+		border-radius: 1rem;
+	}
+
+	.card-img-top {
+		border-radius: 1rem 1rem 0 0;
+	}
+
+	.alert {
+		border-radius: 0.75rem;
 	}
 </style>
