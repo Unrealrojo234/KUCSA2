@@ -13,8 +13,6 @@ export const load = async ({ fetch }) => {
 		throw redirect(303, '/auth/login');
 	}
 
-	console.log(session);
-
 	try {
 		// Fetch user profile data
 		const response = await fetch('/database/fetching/userProfile', {
@@ -35,7 +33,6 @@ export const load = async ({ fetch }) => {
 
 		return { data };
 	} catch (error) {
-		console.error('Error:', error);
 		return {
 			userProfile: null
 		};

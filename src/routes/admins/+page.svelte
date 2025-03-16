@@ -20,8 +20,6 @@
 
 	const { data } = $props();
 
-	console.table(data);
-
 	const toggleShow = (show) => {
 		switch (show) {
 			case 'attendance':

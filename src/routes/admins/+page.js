@@ -24,7 +24,6 @@ export const load = async () => {
 			throw redirect(303, '/auth/login');
 		}
 	} catch (error) {
-		console.error('Error:', error);
 		throw redirect(303, '/');
 	}
 };
