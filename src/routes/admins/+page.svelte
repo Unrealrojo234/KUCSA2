@@ -6,6 +6,7 @@
 	import Events from './Events.svelte';
 	import UpcomingEvents from '../UpcomingEvents.svelte';
 	import Landing from './Landing.svelte';
+	import OffCanvas from '../OffCanvas.svelte';
 
 	let showAttendance = $state(false);
 
@@ -64,6 +65,7 @@
 	};
 </script>
 
+<OffCanvas />
 {#await data}
 	<p>Loading</p>
 {:then}

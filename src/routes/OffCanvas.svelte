@@ -9,6 +9,8 @@
 	import handleLogout from '$lib/logout';
 	import { onMount } from 'svelte';
 
+	let isAdmin = $state(false);
+
 	const navigateAndRefresh = async () => {
 		await goto('/');
 		window.location.reload();
@@ -41,6 +43,17 @@
 
 	onMount(async () => {
 		session = await getUid();
+
+		if (session) {
+			const uid = session.user.id;
+			const { data, error } = await supabase.from('profiles').select('*').eq('id', uid);
+
+			if (data.isAdmin) {
+				isAdmin = true;
+			}
+			if (data.length > 0 && !data[0].isAdmin) {
+			}
+		}
 	});
 </script>
 
@@ -77,6 +90,7 @@
 			<li><a href="/#about" style="color:#00b492 ;">About</a></li>
 			{#if session}
 				<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
+				<li><a href="/admins" style="color:#00b492 ;">Admin Dashboard</a></li>
 				<li>
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_missing_attribute -->
