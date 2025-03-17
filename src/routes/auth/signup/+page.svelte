@@ -31,10 +31,10 @@
 			color: '#ffffff', // White text
 			timer: 1500,
 			showConfirmButton: false,
-			confirmButtonColor: 'red', // Neon green confirm button
-			iconColor: 'red', // Neon green icon
+			confirmButtonColor: 'red',
+			iconColor: 'red',
 			customClass: {
-				popup: 'custom-swal-popup', // Optional: Add custom class for further styling
+				popup: 'custom-swal-popup',
 				title: 'custom-swal-title',
 				content: 'custom-swal-content',
 				confirmButton: 'custom-swal-confirm-button'
@@ -50,12 +50,25 @@
 	let lastName = $state('');
 	let phoneNumber = $state('');
 
+	const alerts = (icon, title) => {
+		Swal.fire({
+			icon: icon,
+			title: title,
+			showConfirmButton: false,
+			timer: 3000,
+			background: '#1e1e2f',
+			color: '#ffffff',
+			iconColor: icon === 'success' ? '#4caf50' : '#f44336'
+		});
+	};
 	//Posting user data
 	const signUp = (e) => {
 		e.preventDefault();
 
 		if (password != Confirmpassword) {
 			showErrorSignupAlert('Passwords do not match!');
+		} else if (password.length < 6) {
+			alerts('error', 'Password should be at least 6 characters');
 		} else {
 			let formData = {
 				email: email,
@@ -77,14 +90,21 @@
 					.then((res) => res.json())
 					.then((data) => {
 						console.log(data);
-						showSuccessSignupAlert();
-						goto('/');
+						if (data.error) {
+							alerts('error', 'Password Should Contain At least a special character and letters!');
+						} else {
+							alerts('success', 'Please Confirm Your Email Address');
+							setTimeout(() => {
+								goto('/');
+							}, 1500);
+						}
 					})
 					.catch((error) => {
+						alerts('error', error.message);
 						console.error('Error', error);
-						showErrorSignupAlert(error);
 					});
 			} catch (error) {
+				alerts('error', error.message);
 				console.error('Error ', error);
 			}
 		}

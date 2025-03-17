@@ -1,5 +1,18 @@
 import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
+import Swal from 'sweetalert2';
+
+const alerts = (icon, title) => {
+	Swal.fire({
+		icon: icon,
+		title: title,
+		showConfirmButton: false,
+		timer: 2000,
+		background: '#1e1e2f',
+		color: '#ffffff',
+		iconColor: icon === 'success' ? '#4caf50' : '#f44336'
+	});
+};
 
 export async function POST({ request }) {
 	try {
@@ -22,7 +35,7 @@ export async function POST({ request }) {
 		});
 
 		if (authError) {
-			console.error('Auth error:', authError.message);
+			alerts('error', authError.message);
 			return json({ error: 'Authentication failed: ' + authError.message }, { status: 400 });
 		}
 
@@ -38,12 +51,15 @@ export async function POST({ request }) {
 		]);
 
 		if (profileError) {
+			alerts('error', profileError.message);
+
 			return json({ error: 'Profile creation failed: ' + profileError.message }, { status: 400 });
 		}
 
 		// Return a success response
 		return json({ message: 'Registration successful', user: authUser.user }, { status: 200 });
 	} catch (error) {
+		alerts('error', 'Internal Server Error');
 		// Handle unexpected errors
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
