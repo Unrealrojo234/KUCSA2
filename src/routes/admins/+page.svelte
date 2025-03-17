@@ -65,98 +65,186 @@
 
 <OffCanvas />
 {#await data}
-	<p>Loading</p>
+	<div class="loading-spinner">
+		<div class="spinner"></div>
+	</div>
 {:then}
 	{#if data.admin}
-		<main>
-			<h1 class="text-center">KUCSA &nbsp;Admins Dashboard</h1>
-			<div style="padding: 12px" class="mb-3 text-center">
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					style="color: {showMembers ? '#09ffd2' : '#00b492'};text-decoration:{showMembers
-						? 'underline'
-						: 'none'};"
-					href="#"
-					onclick={() => {
-						toggleShow('members');
-					}}>Members</a
-				>
-				&nbsp;&nbsp;
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					style="color: {showAttendance ? '#09ffd2' : '#00b492'};text-decoration:{showAttendance
-						? 'underline'
-						: 'none'};"
-					href="#"
-					onclick={() => {
-						toggleShow('attendance');
-					}}>Mark Attendance</a
-				>
+		<main class="dashboard-container">
+			<h1 class="dashboard-title">KUCSA Admins Dashboard</h1>
 
-				&nbsp;&nbsp;
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					href="#"
-					style="color: {showRegistrationRenewal
-						? '#09ffd2'
-						: '#00b492'};text-decoration:{showRegistrationRenewal ? 'underline' : 'none'};"
-					onclick={() => {
-						toggleShow('registationRenewal');
-					}}>Registration & Renewal</a
+			<nav class="dashboard-nav">
+				<button class="nav-link" class:active={showMembers} onclick={() => toggleShow('members')}>
+					Members
+				</button>
+				<button
+					class="nav-link"
+					class:active={showAttendance}
+					onclick={() => toggleShow('attendance')}
 				>
+					Mark Attendance
+				</button>
+				<button
+					class="nav-link"
+					class:active={showRegistrationRenewal}
+					onclick={() => toggleShow('registationRenewal')}
+				>
+					Registration & Renewal
+				</button>
+				<button
+					class="nav-link"
+					class:active={showUpcomingEvents}
+					onclick={() => toggleShow('upcomingEvents')}
+				>
+					Upcoming Events
+				</button>
+				<button class="nav-link" class:active={showStats} onclick={() => toggleShow('stats')}>
+					Statistics
+				</button>
+			</nav>
 
-				&nbsp;&nbsp;
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					href="#"
-					style="color: {showUpcomingEvents
-						? '#09ffd2'
-						: '#00b492'};text-decoration:{showUpcomingEvents ? 'underline' : 'none'};"
-					onclick={() => {
-						toggleShow('upcomingEvents');
-					}}>Upcoming Events</a
-				>
-
-				&nbsp;&nbsp;
-				<!-- svelte-ignore a11y_invalid_attribute -->
-				<a
-					href="#"
-					style="color: {showStats ? '#09ffd2' : '#00b492'};text-decoration:{showStats
-						? 'underline'
-						: 'none'};"
-					onclick={() => {
-						toggleShow('stats');
-					}}>Statistics</a
-				>
+			<div class="content-container bg-dark">
+				{#if showAttendance}
+					<Attendace />
+				{:else if showMembers}
+					<AllMembers />
+				{:else if showRegistrationRenewal}
+					<RegistRenewal />
+				{:else if showUpcomingEvents}
+					<Events />
+				{:else if showStats}
+					<Landing />
+				{/if}
 			</div>
-
-			{#if showAttendance}
-				<Attendace />
-			{:else if showMembers}
-				<AllMembers />
-			{:else if showRegistrationRenewal}
-				<RegistRenewal />
-			{:else if showUpcomingEvents}
-				<Events />
-			{:else if showStats}
-				<Landing />
-			{/if}
 		</main>
 	{:else}
-		<div>
-			<p>You are not an admin</p>
+		<div class="unauthorized">
+			<svg aria-hidden="true" class="icon"><use href="#icon-lock" /></svg>
+			<p>You don't have administrator privileges</p>
 		</div>
 	{/if}
 {/await}
 
 <style>
-	a {
-		text-decoration: none;
-		color: #00b492;
-		font-size: 1rem;
+	.dashboard-container {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 1rem;
 	}
 
-	a:hover {
+	.dashboard-title {
+		color: #00b492;
+		font-size: clamp(1.5rem, 3vw, 2.5rem);
+		margin: 2rem 0;
+		text-align: center;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.dashboard-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
+		margin-bottom: 2rem;
+		padding: 1rem 0;
+		background: rgba(0, 180, 146, 0.05);
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	}
+
+	.nav-link {
+		padding: 0.75rem 1.5rem;
+		border: none;
+		background: none;
+		color: #00b492;
+		font-size: 1rem;
+		font-weight: 500;
+		border-radius: 8px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		position: relative;
+	}
+
+	.nav-link:hover {
 		color: #09ffd2;
+		background: rgba(9, 255, 210, 0.1);
+		transform: translateY(-1px);
+	}
+
+	.nav-link.active {
+		color: #09ffd2;
+		background: rgba(9, 255, 210, 0.15);
+	}
+
+	.nav-link.active::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60%;
+		height: 2px;
+		background: #09ffd2;
+		border-radius: 2px;
+	}
+
+	.content-container {
+		padding: 2rem;
+		background: white;
+		border-radius: 16px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		margin-bottom: 2rem;
+	}
+
+	.loading-spinner {
+		display: flex;
+		justify-content: center;
+		padding: 4rem;
+	}
+
+	.spinner {
+		width: 3rem;
+		height: 3rem;
+		border: 4px solid #00b492;
+		border-top-color: transparent;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	.unauthorized {
+		text-align: center;
+		padding: 4rem;
+		color: #ff4444;
+	}
+
+	.unauthorized .icon {
+		width: 4rem;
+		height: 4rem;
+		margin-bottom: 1rem;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.dashboard-nav {
+			gap: 0.5rem;
+			padding: 0.5rem;
+		}
+
+		.nav-link {
+			padding: 0.5rem 1rem;
+			font-size: 0.9rem;
+		}
+
+		.content-container {
+			padding: 1rem;
+			margin: 0 -1rem;
+			border-radius: 0;
+			box-shadow: none;
+		}
 	}
 </style>

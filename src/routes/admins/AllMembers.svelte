@@ -2,6 +2,7 @@
 	let users = $state([]); // Initialize users as an empty array
 	import { onMount } from 'svelte';
 	import Loader from '../payment/Loader.svelte';
+	import SleekLoader from './sleekLoader.svelte';
 
 	onMount(() => {
 		try {
@@ -52,7 +53,7 @@
 			</table>
 		</div>
 	{:else}
-		<Loader />
+		<SleekLoader />
 	{/if}
 </main>
 

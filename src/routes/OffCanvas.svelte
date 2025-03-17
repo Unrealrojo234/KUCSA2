@@ -68,7 +68,6 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="overlay {isOpen ? 'open' : ''}" onclick={closeDrawer} />
-<h1 style="position:fixed">KUCSA</h1>
 <!-- Drawer Navigation -->
 <div class="drawer {isOpen ? 'open' : ''}">
 	<div class="drawer-content">
@@ -81,38 +80,129 @@
 			</label>
 		</div>
 
-		<h2>Navigation</h2>
-		<ul>
-			<li><a href="/" style="color:#00b492 ;">Home</a></li>
-			<li><a href="/#about" style="color:#00b492 ;">About</a></li>
-			{#if session}
-				<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
-				{#if isAdmin}
-					<li><a href="/admins" style="color:#00b492 ;">Admin Dashboard</a></li>
+		<div class="navigation-container">
+			<h2 class="nav-heading">Navigation</h2>
+
+			<ul class="nav-list">
+				<li><a href="/" style="color:#00b492 ;">Home</a></li>
+				<li><a href="/#about" style="color:#00b492 ;">About</a></li>
+				{#if session}
+					<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
+					{#if isAdmin}
+						<li><a href="/admins" style="color:#00b492 ;">Admin Dashboard</a></li>
+					{/if}
+					<li>
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_missing_attribute -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<!-- svelte-ignore a11y_invalid_attribute -->
+						<a
+							style="color:#00b492 ;"
+							href="#"
+							onclick={() => {
+								logout();
+							}}>Logout</a
+						>
+					</li>
+				{:else}
+					<li><a style="color:#00b492 ;" href="/auth/login">Login</a></li>
+					<li><a style="color:#00b492 ;" href="/auth/signup">Sign Up</a></li>
 				{/if}
-				<li>
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_missing_attribute -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<!-- svelte-ignore a11y_invalid_attribute -->
-					<a
-						style="color:#00b492 ;"
-						href="#"
-						onclick={() => {
-							logout();
-						}}>Logout</a
-					>
-				</li>
-			{:else}
-				<li><a style="color:#00b492 ;" href="/auth/login">Login</a></li>
-				<li><a style="color:#00b492 ;" href="/auth/signup">Sign Up</a></li>
-			{/if}
-		</ul>
+			</ul>
+		</div>
 	</div>
 </div>
 
 <style>
 	/* From Uiverse.io by vinodjangid07 */
+	.nav-heading {
+		color: #00b492;
+		font-family: 'Arial Rounded MT Bold', sans-serif;
+		border-bottom: 2px solid #6ae600;
+		padding-bottom: 0.5rem;
+		margin-bottom: 1.5rem;
+		letter-spacing: 0.05em;
+	}
+
+	.nav-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.nav-list li {
+		margin: 1.25rem 0;
+		transition: transform 0.3s ease;
+	}
+
+	.nav-list li:hover {
+		transform: translateX(8px);
+	}
+
+	.nav-list a {
+		color: #00b492;
+		text-decoration: none;
+		font-size: 1.1rem;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		display: block;
+		position: relative;
+	}
+
+	.nav-list a:hover {
+		background: rgba(0, 180, 146, 0.1);
+		color: #00d6a9;
+	}
+
+	.nav-list a::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -2px;
+		width: 0;
+		height: 2px;
+		background: #6ae600;
+		transition: width 0.3s ease;
+	}
+
+	.nav-list a:hover::before {
+		width: 100%;
+	}
+
+	/* Drawer enhancements */
+	.drawer {
+		background: #1a1d21;
+		box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+	}
+
+	.drawer-content {
+		padding: 2rem 1.5rem;
+	}
+
+	/* Toggle animation refinement */
+	.toggle {
+		transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	}
+
+	/* Overlay enhancement */
+	.overlay {
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(3px);
+	}
+
+	/* Logout button specific styling */
+	.nav-list li:last-child a {
+		color: #e6006a;
+	}
+
+	.nav-list li:last-child a:hover {
+		background: rgba(230, 0, 106, 0.1);
+	}
+
+	.nav-list li:last-child a::before {
+		background: #e6006a;
+	}
 	#checkbox {
 		display: none;
 	}
