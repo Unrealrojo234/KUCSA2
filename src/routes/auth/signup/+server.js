@@ -1,18 +1,5 @@
 import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
-import Swal from 'sweetalert2';
-
-const alerts = (icon, title) => {
-	Swal.fire({
-		icon: icon,
-		title: title,
-		showConfirmButton: false,
-		timer: 2000,
-		background: '#1e1e2f',
-		color: '#ffffff',
-		iconColor: icon === 'success' ? '#4caf50' : '#f44336'
-	});
-};
 
 export async function POST({ request }) {
 	try {
@@ -35,32 +22,45 @@ export async function POST({ request }) {
 		});
 
 		if (authError) {
-			alerts('error', authError.message);
+			console.error('Authentication error:', authError);
 			return json({ error: 'Authentication failed: ' + authError.message }, { status: 400 });
 		}
 
-		// Step 2: Insert user profile into the profiles table
-		const { data: profileData, error: profileError } = await supabase.from('profiles').insert([
-			{
-				id: authUser.user.id, // Link to the auth user
-				reg_number: regNumber,
-				first_name: firstName,
-				last_name: lastName,
-				phone_number: phoneNumber
-			}
-		]);
+		// Step 2: Ensure the user is fully created
+		if (!authUser.user) {
+			return json({ error: 'User not created in auth.users table' }, { status: 400 });
+		}
+
+		// Step 3: Insert user profile into the profiles table
+		const { data: profileData, error: profileError } = await supabase
+			.from('profiles')
+			.insert([
+				{
+					id: authUser.user.id, // Link to the auth user
+					reg_number: regNumber,
+					first_name: firstName,
+					last_name: lastName,
+					phone_number: phoneNumber
+				}
+			])
+			.select(); // Use .select() to return the inserted data
 
 		if (profileError) {
-			alerts('error', profileError.message);
-
+			console.error('Profile creation error:', profileError);
 			return json({ error: 'Profile creation failed: ' + profileError.message }, { status: 400 });
 		}
 
 		// Return a success response
-		return json({ message: 'Registration successful', user: authUser.user }, { status: 200 });
+		return json(
+			{
+				message: 'Registration successful',
+				user: authUser.user,
+				profile: profileData
+			},
+			{ status: 200 }
+		);
 	} catch (error) {
-		alerts('error', 'Internal Server Error');
-		// Handle unexpected errors
+		console.error('Internal server error:', error);
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
 }
