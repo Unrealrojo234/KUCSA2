@@ -92,24 +92,19 @@
 					.then((data) => {
 						console.log(data);
 						if (data.error) {
-							if (data.error.includes('duplicate key' || 'Registration number already exists')) {
+							if (data.error.includes('Registration number already exists')) {
 								alerts('error', 'This Reg Number already exists');
 							} else if (
-								data.error.includes(
-									'For security purposes, you can only request this after 34 seconds'
-								)
+								data.error.includes('For security purposes, you can only request this after ')
 							) {
 								alerts(
 									'error',
-									'For security purposes, you can only request this after 34 seconds.'
+									'For security purposes, you can only request this after 60 seconds.'
 								);
 							} else if (data.error.includes('Profile creation failed')) {
 								alerts('error', 'Profile creation failed');
 							} else {
-								alerts(
-									'error',
-									'Password Should Contain At least a special character and letters!'
-								);
+								alerts('error', data.error);
 							}
 						} else {
 							alerts('success', 'Please Confirm Your Email Address');
