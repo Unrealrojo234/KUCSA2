@@ -1,6 +1,7 @@
 <script>
 	import Swal from 'sweetalert2';
 	import { goto } from '$app/navigation';
+	import { error } from '@sveltejs/kit';
 
 	function showSuccessSignupAlert() {
 		Swal.fire({
@@ -55,7 +56,7 @@
 			icon: icon,
 			title: title,
 			showConfirmButton: false,
-			timer: 3000,
+			timer: 3500,
 			background: '#1e1e2f',
 			color: '#ffffff',
 			iconColor: icon === 'success' ? '#4caf50' : '#f44336'
@@ -91,7 +92,25 @@
 					.then((data) => {
 						console.log(data);
 						if (data.error) {
-							alerts('error', 'Password Should Contain At least a special character and letters!');
+							if (data.error.includes('duplicate key')) {
+								alerts('error', 'This Reg Number already exists');
+							} else if (
+								data.error.includes(
+									'For security purposes, you can only request this after 34 seconds'
+								)
+							) {
+								alerts(
+									'error',
+									'For security purposes, you can only request this after 34 seconds.'
+								);
+							} else if (data.error.includes('Profile creation failed')) {
+								alerts('error', 'Profile creation failed');
+							} else {
+								alerts(
+									'error',
+									'Password Should Contain At least a special character and letters!'
+								);
+							}
 						} else {
 							alerts('success', 'Please Confirm Your Email Address');
 							setTimeout(() => {
