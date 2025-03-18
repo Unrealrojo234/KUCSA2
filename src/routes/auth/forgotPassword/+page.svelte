@@ -7,7 +7,7 @@
 
 	async function handleForgotPassword(email) {
 		const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-			redirectTo: `kucsa.vercel.app/auth/forgotPassword/new-pass` // Redirect URL after password reset
+			redirectTo: `${rootUrl}/auth/forgotPassword/new-pass`
 		});
 
 		if (error) {

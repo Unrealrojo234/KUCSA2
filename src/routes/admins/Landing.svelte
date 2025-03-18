@@ -24,7 +24,9 @@
 					registeredMembers = users.filter((user) => user.registered === true).length;
 					renewedMembers = users.filter((user) => user.renewed === true).length;
 					unregisteredMembers = users.filter((user) => user.registered === false).length;
-					unRenewedMembers = users.filter((user) => user.renewed === false).length;
+					unRenewedMembers = users.filter(
+						(user) => user.renewed === false && user.registered === true
+					).length;
 				})
 				.catch((error) => console.log('Error ', error));
 		} catch (error) {
@@ -36,7 +38,7 @@
 		totalMembers ? Math.round((registeredMembers / totalMembers) * 100) : 0
 	);
 	let renewedPercentage = $derived(
-		totalMembers ? Math.round((renewedMembers / totalMembers) * 100) : 0
+		registeredMembers ? Math.round((renewedMembers / registeredMembers) * 100) : 0
 	);
 </script>
 
@@ -108,7 +110,7 @@
 					</div>
 					<div class="mt-2 text-end">
 						<span class="h5 fw-bold">{renewedMembers}</span>
-						<span class="text-muted">/{totalMembers}</span>
+						<span class="text-muted">/{registeredMembers}</span>
 					</div>
 				</div>
 			</div>
