@@ -210,7 +210,13 @@
 
 	data = data.data;
 
-	const { reg_number, first_name, last_name, phone_number, registered, renewed } = data;
+	console.log(data);
+
+	try {
+		const { reg_number, first_name, last_name, phone_number, registered, renewed } = data;
+	} catch (error) {
+		console.log(error);
+	}
 
 	setInterval(() => {
 		if (attendance > 0 && meetings > 0 && attendance <= meetings) {
