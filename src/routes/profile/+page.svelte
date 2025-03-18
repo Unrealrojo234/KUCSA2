@@ -212,12 +212,6 @@
 
 	console.log(data);
 
-	try {
-		const { reg_number, first_name, last_name, phone_number, registered, renewed } = data;
-	} catch (error) {
-		console.log(error);
-	}
-
 	setInterval(() => {
 		if (attendance > 0 && meetings > 0 && attendance <= meetings) {
 			attendancePercentage = (attendance / meetings) * 100;
@@ -226,13 +220,12 @@
 			attendancePercentage = 0;
 		}
 	}, 1000);
-
-	let user = $state({
-		name: first_name + ' ' + last_name,
-		phone: phone_number,
-		regNo: reg_number,
-		isRegistered: registered,
-		isRenewed: renewed,
+	let user = $derived({
+		name: `${data.first_name || ''} ${data.last_name || ''}`,
+		phone: data.phone_number || '',
+		regNo: data.reg_number || '',
+		isRegistered: data.registered || false,
+		isRenewed: data.renewed || false,
 		profile: 'avator.svg'
 	});
 </script>
@@ -273,11 +266,12 @@
 					<h3 class="card-title mb-3">Registration</h3>
 					<button
 						type="button"
-						disabled={registered}
+						disabled={user.isRegistered}
 						onclick={() => {
 							goto('/payment/registration');
 						}}
-						class="btn cta-button">{registered ? 'Already Registered 🤝🏼' : 'Register 🥺'}</button
+						class="btn cta-button"
+						>{user.isRegistered ? 'Already Registered 🤝🏼' : 'Register 🥺'}</button
 					>
 				</div>
 			</div>
@@ -288,11 +282,11 @@
 					<h3 class="card-title mb-3">Renewal</h3>
 					<button
 						type="button"
-						disabled={renewed || !registered}
+						disabled={user.isRenewed || !user.isRegistered}
 						onclick={() => {
 							goto('/payment/renewal');
 						}}
-						class="btn cta-button">{renewed ? 'Already Renewed 🤝🏼' : 'Renew 🥺'}</button
+						class="btn cta-button">{user.isRenewed ? 'Already Renewed 🤝🏼' : 'Renew 🥺'}</button
 					>
 				</div>
 			</div>
