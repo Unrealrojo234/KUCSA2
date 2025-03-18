@@ -92,7 +92,7 @@
 					.then((data) => {
 						console.log(data);
 						if (data.error) {
-							if (data.error.includes('duplicate key')) {
+							if (data.error.includes('duplicate key' || 'Registration number already exists')) {
 								alerts('error', 'This Reg Number already exists');
 							} else if (
 								data.error.includes(
