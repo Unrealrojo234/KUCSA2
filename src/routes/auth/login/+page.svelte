@@ -105,7 +105,6 @@
 		<br />
 
 		<button class="submit btn btn-success">Login</button>
-		<p class="signin">Don't have an account? <a href="/auth/signup">Signup</a></p>
 		<p class="signin"><a href="/auth/forgotPassword/">Forgot Password</a></p>
 	</form>
 </main>
