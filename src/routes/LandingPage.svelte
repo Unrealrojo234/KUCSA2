@@ -5,6 +5,7 @@
 	import { supabase } from '$lib/supabaseClient';
 	import UpcomingEvents from './UpcomingEvents.svelte';
 	import GiHubBtn from './GiHubBtn.svelte';
+	import GoogleBtn from './GoogleBtn.svelte';
 	import TopDevs from './TopDevs.svelte';
 </script>
 
@@ -24,7 +25,8 @@
 		{/if}
 		<p class="lead">Your Gateway to Computing Excellence</p>
 		{#if !user}
-			<a href="/auth/login" style="text-decoration: none;border:none;" class="cta-button">login</a>
+			<!-- <a href="/auth/login" style="text-decoration: none;border:none;" class="cta-button">login</a> -->
+			<GoogleBtn />
 		{/if}
 	</div>
 </section>
@@ -160,7 +162,7 @@
 	</div>
 </section>
 
-<div class="bg-dark">
+<div class="bg-dark" id="events">
 	<UpcomingEvents />
 </div>
 

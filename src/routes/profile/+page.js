@@ -1,16 +1,16 @@
 // src/routes/protected/+page.js
 import { redirect } from '@sveltejs/kit';
 import { supabase } from '$lib/supabaseClient';
+import getUid from '$lib/UID.js';
+import { get } from 'svelte/store';
 
 export const load = async ({ fetch }) => {
 	// Fetch the current session
-	const {
-		data: { session }
-	} = await supabase.auth.getSession();
+	let session = await getUid();
 
 	// If there's no session, redirect to the login page
 	if (!session) {
-		throw redirect(303, '/auth/login');
+		throw redirect(303, '/');
 	}
 
 	try {
@@ -20,7 +20,7 @@ export const load = async ({ fetch }) => {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST',
-			body: JSON.stringify({ uid: session.user.id })
+			body: JSON.stringify({ uid: session })
 		});
 
 		if (!response.ok) {

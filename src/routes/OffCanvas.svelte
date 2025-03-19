@@ -86,6 +86,7 @@
 			<ul class="nav-list">
 				<li><a href="/" style="color:#00b492 ;">Home</a></li>
 				<li><a href="/#about" style="color:#00b492 ;">About</a></li>
+				<li><a style="color:#00b492 ;" href="/#events">Upcoming Events</a></li>
 				{#if session}
 					<li><a href="/profile" style="color:#00b492 ;">Profile</a></li>
 					{#if isAdmin}
@@ -106,7 +107,7 @@
 					</li>
 				{:else}
 					<li><a style="color:#00b492 ;" href="/auth/login">Login</a></li>
-					<li><a style="color:#00b492 ;" href="/auth/signup">Sign Up</a></li>
+					<li><a style="color:#00b492 ;display:none" href="/auth/login">Login</a></li>
 				{/if}
 			</ul>
 		</div>

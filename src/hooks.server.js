@@ -14,7 +14,7 @@ export async function handle({ event, resolve }) {
 	if (protectedRoutes.includes(event.url.pathname)) {
 		// If there's no session, redirect to the login page
 		if (!session) {
-			throw redirect(303, '/auth/login');
+			throw redirect(303, '/');
 		}
 	}
 

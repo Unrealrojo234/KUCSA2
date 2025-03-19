@@ -6,17 +6,34 @@
 	import { supabase } from '$lib/supabaseClient';
 	import getUid from '$lib/UID';
 	import OffCanvas from '../OffCanvas.svelte';
+	import CreateProfile from '../createProfile/CreateProfile.svelte';
 
 	let meetings = $state(null);
+
+	let avatorUrl = $state('');
 
 	let attendance = $state(null);
 
 	let attendancePercentage = $state(0);
 	let canvas;
 
+	let userProfile = $state(null);
+
 	let uid = $state('');
 
 	onMount(async () => {
+		try {
+			const {
+				data: { session }
+			} = await supabase.auth.getSession();
+
+			avatorUrl = session.user.user_metadata.avatar_url;
+
+			console.log(avatorUrl);
+		} catch (error) {
+			console.log('Error', error);
+		}
+
 		//Getting the current session
 		uid = await getUid();
 
@@ -210,6 +227,8 @@
 
 	data = data.data;
 
+	userProfile = data;
+
 	console.log(data);
 
 	setInterval(() => {
@@ -226,82 +245,88 @@
 		regNo: data.reg_number || '',
 		isRegistered: data.registered || false,
 		isRenewed: data.renewed || false,
-		profile: 'avator.svg'
+		profile: avatorUrl || 'avator.svg'
 	});
 </script>
 
 <OffCanvas />
 
-<main style="overflow-x: hidden;" class="container-fluid p-3 p-md-2">
-	<h1 class="text-center mb-4 mb-md-5">Profile</h1>
+{#if userProfile}
+	<main style="overflow-x: hidden;" class="container-fluid p-3 p-md-2">
+		<h1 class="text-center mb-4 mb-md-5">Profile</h1>
 
-	<!-- Profile Card -->
-	<div class="card event-card shadow-lg mx-auto mb-5" style="max-width: 40rem;">
-		<div class="card-body text-center p-4">
-			<div class="profile-img-container">
-				<!-- svelte-ignore a11y_img_redundant_alt -->
-				<img src={user.profile} alt="Profile Picture" class="profile-img" />
-			</div>
-			<div class="card user-info mt-4 p-3">
-				<h2 class="mb-3">{user.name}</h2>
-				<p class="mb-2"><strong>Reg No:</strong> {user.regNo}</p>
-				<p class="mb-2"><strong>Phone:</strong> {user.phone}</p>
-			</div>
-		</div>
-	</div>
-
-	<!-- Attendance Section -->
-	<div class="text-center mb-5">
-		<h2 class="mb-3">Attendance: {attendancePercentage}%</h2>
-		<div class="attendance-bar mx-auto">
-			<div class="attendance-progress" style={`width: ${attendancePercentage}%`}></div>
-		</div>
-	</div>
-
-	<!-- Action Cards -->
-	<div class="row justify-content-center g-4">
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card event-card shadow-lg h-100">
-				<div class="card-body text-center p-4">
-					<h3 class="card-title mb-3">Registration</h3>
-					<button
-						type="button"
-						disabled={user.isRegistered}
-						onclick={() => {
-							goto('/payment/registration');
-						}}
-						class="btn cta-button"
-						>{user.isRegistered ? 'Already Registered 🤝🏼' : 'Register 🥺'}</button
-					>
+		<!-- Profile Card -->
+		<div class="card event-card shadow-lg mx-auto mb-5" style="max-width: 40rem;">
+			<div class="card-body text-center p-4">
+				<div class="profile-img-container">
+					<!-- svelte-ignore a11y_img_redundant_alt -->
+					<img src={user.profile} alt="Profile Picture" class="profile-img" />
+				</div>
+				<div class="card user-info mt-4 p-3">
+					<h2 class="mb-3">{user.name}</h2>
+					<p class="mb-2"><strong>Reg No:</strong> {user.regNo}</p>
+					<p class="mb-2"><strong>Phone:</strong> {user.phone}</p>
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card event-card shadow-lg h-100">
-				<div class="card-body text-center p-4">
-					<h3 class="card-title mb-3">Renewal</h3>
-					<button
-						type="button"
-						disabled={user.isRenewed || !user.isRegistered}
-						onclick={() => {
-							goto('/payment/renewal');
-						}}
-						class="btn cta-button">{user.isRenewed ? 'Already Renewed 🤝🏼' : 'Renew 🥺'}</button
-					>
+
+		<!-- Attendance Section -->
+		<div class="text-center mb-5">
+			<h2 class="mb-3">Attendance: {attendancePercentage}%</h2>
+			<div class="attendance-bar mx-auto">
+				<div class="attendance-progress" style={`width: ${attendancePercentage}%`}></div>
+			</div>
+		</div>
+
+		<!-- Action Cards -->
+		<div class="row justify-content-center g-4">
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card event-card shadow-lg h-100">
+					<div class="card-body text-center p-4">
+						<h3 class="card-title mb-3">Registration</h3>
+						<button
+							type="button"
+							disabled={user.isRegistered}
+							onclick={() => {
+								goto('/payment/registration');
+							}}
+							class="btn cta-button"
+							>{user.isRegistered ? 'Already Registered 🤝🏼' : 'Register 🥺'}</button
+						>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card event-card shadow-lg h-100">
+					<div class="card-body text-center p-4">
+						<h3 class="card-title mb-3">Renewal</h3>
+						<button
+							type="button"
+							disabled={user.isRenewed || !user.isRegistered}
+							onclick={() => {
+								goto('/payment/renewal');
+							}}
+							class="btn cta-button">{user.isRenewed ? 'Already Renewed 🤝🏼' : 'Renew 🥺'}</button
+						>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card event-card shadow-lg h-100">
+					<div class="card-body text-center p-4">
+						<h3 class="card-title mb-3">QR-Code</h3>
+						<button type="button" onclick={QRCodeGenerator} class="btn cta-button"
+							>Generate ⚙️</button
+						>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card event-card shadow-lg h-100">
-				<div class="card-body text-center p-4">
-					<h3 class="card-title mb-3">QR-Code</h3>
-					<button type="button" onclick={QRCodeGenerator} class="btn cta-button">Generate ⚙️</button
-					>
-				</div>
-			</div>
-		</div>
-	</div>
-</main>
+	</main>
+{:else}
+	<br /><br /><br />
+	<CreateProfile />
+{/if}
 
 <style>
 	.profile-img-container {
