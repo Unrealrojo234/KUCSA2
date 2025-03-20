@@ -8,6 +8,7 @@
 	import GoogleBtn from './GoogleBtn.svelte';
 	import TopDevs from './TopDevs.svelte';
 	import GitHubSignUp from '../GitHubSignUp.svelte';
+	import Socials from '../Socials.svelte';
 </script>
 
 <section
@@ -202,6 +203,8 @@
 		</form>
 	</div>
 	<br />
+	<p>Follow us on</p>
+	<Socials />
 	<p>&#169;2025 KUCSA | All Rights Are Reserved</p>
 </footer>
 
