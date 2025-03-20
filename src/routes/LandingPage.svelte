@@ -7,6 +7,7 @@
 	import GiHubBtn from './GiHubBtn.svelte';
 	import GoogleBtn from './GoogleBtn.svelte';
 	import TopDevs from './TopDevs.svelte';
+	import GitHubSignUp from '../GitHubSignUp.svelte';
 </script>
 
 <section
@@ -27,6 +28,7 @@
 		{#if !user}
 			<!-- <a href="/auth/login" style="text-decoration: none;border:none;" class="cta-button">login</a> -->
 			<GoogleBtn />
+			<GitHubSignUp />
 		{/if}
 	</div>
 </section>
